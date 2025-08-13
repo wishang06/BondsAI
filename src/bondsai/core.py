@@ -49,19 +49,31 @@ class PersonalityProfile:
     
     def get_summary(self) -> str:
         """Generate a concise personality summary."""
+        if self.conversation_count < 5:
+            return "Still getting to know this person..."
+        
         summary_parts = []
         
-        if self.traits["personality_type"]:
-            summary_parts.append(f"**Personality Type**: {self.traits['personality_type']}")
-        
+        # Personality overview
+        personality_traits = []
         if self.traits["communication_style"]:
-            summary_parts.append(f"**Communication Style**: {', '.join(self.traits['communication_style'][:3])}")
+            personality_traits.extend(self.traits["communication_style"][:2])
+        if self.traits["social_preferences"]:
+            personality_traits.extend(self.traits["social_preferences"][:2])
         
+        if personality_traits:
+            summary_parts.append(f"**Personality**: {', '.join(personality_traits)}")
+        
+        # Values and interests
         if self.traits["values"]:
             summary_parts.append(f"**Core Values**: {', '.join(self.traits['values'][:3])}")
         
         if self.traits["interests"]:
             summary_parts.append(f"**Key Interests**: {', '.join(self.traits['interests'][:3])}")
+        
+        # Lifestyle and goals
+        if self.traits["lifestyle"]:
+            summary_parts.append(f"**Lifestyle**: {', '.join(self.traits['lifestyle'][:2])}")
         
         if self.traits["relationship_goals"]:
             summary_parts.append(f"**Relationship Goals**: {', '.join(self.traits['relationship_goals'][:2])}")
@@ -96,15 +108,21 @@ class DatingAssistant:
 5. **Show active listening**: Reference what they've shared and demonstrate you're paying attention
 6. **Progressive disclosure**: Start light and fun, gradually explore deeper topics
 7. **Be encouraging**: Create a safe space for sharing personal information
+8. **Ask 1-2 follow-up questions MAX**: Don't dwell too long on one topic - move to new areas after 1-2 exchanges (Unless there is a smooth transition to a new topic that is connected to the previous topic)
+9. **Cover diverse topics quickly**: Explore different personality dimensions in each conversation
+10. **Gather broad personality insights**: Learn about values, communication style, social preferences, interests, lifestyle, and relationship goals
+11. **Show active listening**: Reference what they've shared briefly, then move to new topics
 
-Key traits to identify:
-- Communication style (direct, playful, thoughtful, etc.)
-- Social preferences (introvert/extrovert, group vs one-on-one)
-- Core values and beliefs
-- Interests and hobbies
-- Lifestyle preferences
+Key traits to identify quickly:
+- Communication style (direct, playful, thoughtful, analytical, etc.)
+- Social preferences (introvert/extrovert, group vs individual, collaborative vs independent)
+- Core values and beliefs (what drives them, principles they live by)
+- Interests and hobbies (creative, analytical, physical, social, etc.)
+- Lifestyle preferences (routine vs spontaneity, work-life balance, etc.)
 - Relationship goals and deal-breakers
-- Personality type indicators
+- Personality type indicators (MBTI-style insights)
+
+IMPORTANT: After 1-2 exchanges on a topic, naturally transition to a completely different area. Don't stay on one topic too long. Cover as many personality dimensions as possible in 10-15 exchanges.
 
 Keep responses conversational, engaging, and focused on getting to know them better. Use emojis naturally and show genuine curiosity about their responses."""
     
@@ -141,7 +159,7 @@ Current conversation context: {self.get_conversation_context()}
 Conversation count: {self.profile.conversation_count}
 
 Categories to analyze:
-- communication_style: How they express themselves
+- communication_style: How they express themselves (direct, playful, thoughtful, etc.)
 - social_preferences: Group vs individual, introvert/extrovert indicators
 - values: What they care about, principles, beliefs
 - interests: Hobbies, activities, things they enjoy
@@ -149,20 +167,45 @@ Categories to analyze:
 - relationship_goals: What they want in relationships
 - deal_breakers: Things they avoid or dislike
 
-Return a JSON object with insights to add to their profile. Be specific and insightful."""
+Return ONLY a JSON object like this:
+{{
+    "communication_style": ["trait1", "trait2"],
+    "social_preferences": ["trait1", "trait2"],
+    "values": ["value1", "value2"],
+    "interests": ["interest1", "interest2"],
+    "lifestyle": ["habit1", "habit2"],
+    "relationship_goals": ["goal1", "goal2"],
+    "deal_breakers": ["dealbreaker1", "dealbreaker2"]
+}}
+
+Be specific and insightful. Only return the JSON, no other text."""
 
         try:
             response = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": analysis_prompt}],
                 temperature=0.3,
-                max_tokens=300,
+                max_tokens=400,
             )
             
-            analysis = response.choices[0].message.content
-            # Parse and add insights to profile
-            # For now, we'll add the raw analysis to conversation insights
-            self.profile.add_insight("conversation_insights", analysis)
+            analysis = response.choices[0].message.content.strip()
+            
+            # Try to parse JSON and add insights
+            try:
+                import json
+                insights = json.loads(analysis)
+                
+                # Add insights to profile
+                for category, traits in insights.items():
+                    if isinstance(traits, list):
+                        for trait in traits:
+                            self.profile.add_insight(category, trait)
+                    else:
+                        self.profile.add_insight(category, str(traits))
+                        
+            except json.JSONDecodeError:
+                # If JSON parsing fails, add raw analysis to insights
+                self.profile.add_insight("conversation_insights", analysis)
             
         except Exception:
             # If analysis fails, continue without it
