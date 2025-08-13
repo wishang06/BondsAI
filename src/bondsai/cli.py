@@ -159,8 +159,6 @@ async def chat_loop(assistant: DatingAssistant) -> None:
             panel = Panel(ai_text, border_style="magenta", padding=(0, 1))
             console.print(panel)
             
-            if assistant.profile.conversation_count >= 10:
-                console.print("\n✨ [bold]Great conversation![/bold] Type /profile to see your personality summary!")
             
         except KeyboardInterrupt:
             console.print("\n💕 Thanks for chatting! Your personality profile is ready for matching!")

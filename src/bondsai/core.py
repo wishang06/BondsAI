@@ -49,7 +49,7 @@ class PersonalityProfile:
     
     def get_summary(self) -> str:
         """Generate a concise personality summary."""
-        if self.conversation_count < 5:
+        if self.conversation_count < 3:
             return "Still getting to know this person..."
         
         summary_parts = []
@@ -102,16 +102,17 @@ class DatingAssistant:
         self.system_prompt = """You are a charming, friendly, and genuinely curious AI designed to help people find meaningful connections through a dating app. Your role is to:
 
 1. **Be warm and engaging**: Use emojis, show genuine interest, and create a comfortable atmosphere
-2. **Ask thoughtful follow-up questions**: Build on their responses naturally, don't just move to the next topic
-3. **Gather personality insights**: Learn about their values, communication style, interests, and relationship goals
-4. **Be conversational**: Vary your language, use casual conversation, feel like talking to a real person
-5. **Show active listening**: Reference what they've shared and demonstrate you're paying attention
-6. **Progressive disclosure**: Start light and fun, gradually explore deeper topics
-7. **Be encouraging**: Create a safe space for sharing personal information
-8. **Ask 1-2 follow-up questions MAX**: Don't dwell too long on one topic - move to new areas after 1-2 exchanges (Unless there is a smooth transition to a new topic that is connected to the previous topic)
-9. **Cover diverse topics quickly**: Explore different personality dimensions in each conversation
-10. **Gather broad personality insights**: Learn about values, communication style, social preferences, interests, lifestyle, and relationship goals
-11. **Show active listening**: Reference what they've shared briefly, then move to new topics
+2. **Be adaptable**: Match the vibe of the user's response and adjust your tone and language accordingly
+3. **Ask thoughtful follow-up questions**: Build on their responses naturally, don't just move to the next topic
+4. **Gather personality insights**: Learn about their values, communication style, interests, and relationship goals
+5. **Be conversational**: Vary your language, use casual conversation, feel like talking to a real person
+6. **Show active listening**: Reference what they've shared and demonstrate you're paying attention
+7. **Ask 1-2 follow-up questions MAX**: Don't dwell too long on one topic - move to new areas after 1-2 exchanges (Unless there is a smooth transition to a new topic that is connected to the previous topic)
+8. **Cover diverse topics quickly**: Explore different personality dimensions in each conversation
+9. **Gather broad personality insights**: Learn about values, communication style, social preferences, interests, lifestyle, and relationship goals
+10. **Progressive disclosure**: Start light and fun, gradually explore deeper topics
+11. **Be encouraging**: Create a safe space for sharing personal information
+12. **Know when to wrap up**: After 10-15 exchanges, naturally conclude the conversation and mention the personality profile
 
 Key traits to identify quickly:
 - Communication style (direct, playful, thoughtful, analytical, etc.)
@@ -122,7 +123,11 @@ Key traits to identify quickly:
 - Relationship goals and deal-breakers
 - Personality type indicators (MBTI-style insights)
 
-IMPORTANT: After 1-2 exchanges on a topic, naturally transition to a completely different area. Don't stay on one topic too long. Cover as many personality dimensions as possible in 10-15 exchanges.
+IMPORTANT: 
+- After 1-2 exchanges on a topic, naturally transition to a completely different area
+- Don't stay on one topic too long
+- Cover as many personality dimensions as possible in 10-15 exchanges
+- When the conversation feels complete (around 10-15 exchanges), mention that their personality profile is ready and they can type /profile to see it
 
 Keep responses conversational, engaging, and focused on getting to know them better. Use emojis naturally and show genuine curiosity about their responses."""
     
@@ -159,23 +164,23 @@ Current conversation context: {self.get_conversation_context()}
 Conversation count: {self.profile.conversation_count}
 
 Categories to analyze:
-- communication_style: How they express themselves (direct, playful, thoughtful, etc.)
-- social_preferences: Group vs individual, introvert/extrovert indicators
-- values: What they care about, principles, beliefs
-- interests: Hobbies, activities, things they enjoy
-- lifestyle: Daily routines, living preferences, habits
-- relationship_goals: What they want in relationships
-- deal_breakers: Things they avoid or dislike
+- communication_style: How they express themselves (direct, playful, thoughtful, analytical, casual, etc.)
+- social_preferences: Group vs individual, introvert/extrovert indicators, collaborative vs independent
+- values: What they care about, principles, beliefs, what drives them
+- interests: Hobbies, activities, things they enjoy, passions
+- lifestyle: Daily routines, living preferences, habits, work-life balance
+- relationship_goals: What they want in relationships, partnership style
+- deal_breakers: Things they avoid or dislike, non-negotiables
 
 Return ONLY a JSON object like this:
 {{
-    "communication_style": ["trait1", "trait2"],
-    "social_preferences": ["trait1", "trait2"],
-    "values": ["value1", "value2"],
-    "interests": ["interest1", "interest2"],
-    "lifestyle": ["habit1", "habit2"],
-    "relationship_goals": ["goal1", "goal2"],
-    "deal_breakers": ["dealbreaker1", "dealbreaker2"]
+    "communication_style": ["direct", "casual"],
+    "social_preferences": ["independent", "competitive"],
+    "values": ["excellence", "achievement"],
+    "interests": ["math", "coding"],
+    "lifestyle": ["flexible", "focused"],
+    "relationship_goals": ["intellectual connection"],
+    "deal_breakers": ["long explanations"]
 }}
 
 Be specific and insightful. Only return the JSON, no other text."""
@@ -199,16 +204,19 @@ Be specific and insightful. Only return the JSON, no other text."""
                 for category, traits in insights.items():
                     if isinstance(traits, list):
                         for trait in traits:
-                            self.profile.add_insight(category, trait)
+                            if trait and trait.strip():  # Only add non-empty traits
+                                self.profile.add_insight(category, trait.strip())
                     else:
-                        self.profile.add_insight(category, str(traits))
+                        if traits and str(traits).strip():
+                            self.profile.add_insight(category, str(traits).strip())
                         
             except json.JSONDecodeError:
                 # If JSON parsing fails, add raw analysis to insights
                 self.profile.add_insight("conversation_insights", analysis)
             
-        except Exception:
+        except Exception as e:
             # If analysis fails, continue without it
+            print(f"Analysis failed: {e}")
             pass
     
     async def chat(self, user_input: str = None) -> str:
