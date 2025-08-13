@@ -1,7 +1,7 @@
 [project]
 name = "bondsai"
 version = "0.1.0"
-description = "Add your description here"
+description = "A dating app that uses AI to match you with your perfect mate."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []

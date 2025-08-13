@@ -2,4 +2,4 @@
 
 __version__ = "0.1.0"
 __author__ = "BondsAI Team"
-__email__ = "team@bondsai.com"
+__email__ = "andyshang368@gmail.com"

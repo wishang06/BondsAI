@@ -15,38 +15,28 @@ from typer import Typer, Exit
 from .core import DatingAssistant
 from .config import config
 
-# Initialize Typer app
 app = Typer(
     name="bondsai",
     help="A charming AI personality profiler for dating app matching",
     add_completion=False,
 )
 
-# Initialize Rich console
 console = Console()
 
 
 def print_welcome() -> None:
     """Print welcome message."""
     welcome_text = Text()
-    welcome_text.append("💕 Welcome to ", style="bold pink")
+    welcome_text.append("💕 Welcome to ", style="bold magenta")
     welcome_text.append("BondsAI", style="bold purple")
-    welcome_text.append(" - Your Dating Personality Profiler!", style="bold pink")
+    welcome_text.append(" - Your Personal AI Matchmaker!", style="bold magenta")
     
     panel = Panel(
         welcome_text,
-        border_style="pink",
+        border_style="magenta",
         padding=(1, 2),
     )
     console.print(panel)
-    
-    # Print configuration info
-    summary = config.__dict__
-    console.print(f"🤖 Model: {summary['openai_model']}")
-    console.print(f"🌡️  Temperature: {summary['openai_temperature']}")
-    console.print(f"📝 Max Tokens: {summary['openai_max_tokens']}")
-    console.print()
-
 
 def print_help() -> None:
     """Print help information."""
@@ -57,7 +47,7 @@ def print_help() -> None:
 • [bold]/profile[/bold] - Show your current personality profile
 • [bold]/clear[/bold] - Start a fresh conversation
 • [bold]/info[/bold] - Show conversation info
-• [bold]/exit[/bold] or [bold]/quit[/bold] - Exit the application
+• [bold]/quit[/bold] - Exit the application
 
 [bold]What to expect:[/bold]
 • Your AI will ask you thoughtful questions to get to know you
@@ -86,7 +76,7 @@ def print_profile(assistant: DatingAssistant) -> None:
 [italic]This profile helps us find your perfect match! 💕[/italic]
     """
     
-    panel = Panel(profile_text, border_style="purple", title="Personality Profile")
+    panel = Panel(profile_text, border_style="blue", title="Personality Profile")
     console.print(panel)
 
 
@@ -118,18 +108,16 @@ async def chat_loop(assistant: DatingAssistant) -> None:
     # Start the conversation
     initial_response = await assistant.chat()
     ai_text = Text()
-    ai_text.append("💕 AI Matchmaker: ", style="bold pink")
+    ai_text.append("💕 AI Matchmaker: ", style="bold magenta")
     ai_text.append(initial_response, style="white")
     
-    panel = Panel(ai_text, border_style="pink", padding=(0, 1))
+    panel = Panel(ai_text, border_style="magenta", padding=(0, 1))
     console.print(panel)
     
     while True:
         try:
-            # Get user input
             user_input = Prompt.ask("\n[bold green]You[/bold green]")
             
-            # Handle commands
             if user_input.lower() in ["/exit", "/quit"]:
                 console.print("\n💕 Thanks for chatting! Your personality profile is ready for matching!")
                 break
@@ -142,12 +130,11 @@ async def chat_loop(assistant: DatingAssistant) -> None:
             elif user_input.lower() == "/clear":
                 assistant.clear_history()
                 console.print("🔄 Starting fresh! Let's get to know you again!")
-                # Restart conversation
                 initial_response = await assistant.chat()
                 ai_text = Text()
-                ai_text.append("💕 AI Matchmaker: ", style="bold pink")
+                ai_text.append("💕 AI Matchmaker: ", style="bold magenta")
                 ai_text.append(initial_response, style="white")
-                panel = Panel(ai_text, border_style="pink", padding=(0, 1))
+                panel = Panel(ai_text, border_style="magenta", padding=(0, 1))
                 console.print(panel)
                 continue
             elif user_input.lower() == "/info":
@@ -158,24 +145,20 @@ async def chat_loop(assistant: DatingAssistant) -> None:
                 console.print("Type /help for available commands.")
                 continue
             
-            # Show typing indicator
             with Live(
-                Spinner("dots", text="💕 AI is thinking about your response..."),
+                Spinner("dots", text="💕 BondsAI is thinking about your response..."),
                 console=console,
                 refresh_per_second=10,
             ):
-                # Get AI response
                 response = await assistant.chat(user_input)
             
-            # Display AI response
             ai_text = Text()
-            ai_text.append("💕 AI Matchmaker: ", style="bold pink")
+            ai_text.append("💕 AI Matchmaker: ", style="bold magenta")
             ai_text.append(response, style="white")
             
-            panel = Panel(ai_text, border_style="pink", padding=(0, 1))
+            panel = Panel(ai_text, border_style="magenta", padding=(0, 1))
             console.print(panel)
             
-            # Show profile after 10+ exchanges
             if assistant.profile.conversation_count >= 10:
                 console.print("\n✨ [bold]Great conversation![/bold] Type /profile to see your personality summary!")
             
@@ -190,13 +173,10 @@ async def chat_loop(assistant: DatingAssistant) -> None:
 def main() -> None:
     """Main entry point for BondsAI Dating App."""
     try:
-        # Validate configuration
         config.validate()
         
-        # Create dating assistant
         assistant = DatingAssistant()
         
-        # Run chat loop
         asyncio.run(chat_loop(assistant))
         
     except ValueError as e:
