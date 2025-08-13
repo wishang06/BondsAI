@@ -127,7 +127,7 @@ IMPORTANT:
 - After 1-2 exchanges on a topic, naturally transition to a completely different area
 - Don't stay on one topic too long
 - Cover as many personality dimensions as possible in 10-15 exchanges
-- When the conversation feels complete (around 10-15 exchanges), mention that their personality profile is ready and they can type /profile to see it
+- When the conversation feels complete (around 10-15 exchanges), naturally conclude and mention that their personality profile will be generated
 
 Keep responses conversational, engaging, and focused on getting to know them better. Use emojis naturally and show genuine curiosity about their responses."""
     
@@ -156,68 +156,46 @@ Keep responses conversational, engaging, and focused on getting to know them bet
     
     async def analyze_personality(self, user_input: str) -> None:
         """Analyze user input for personality insights."""
-        analysis_prompt = f"""Analyze this user response for personality insights. Extract key traits and add them to the appropriate categories:
-
-User response: "{user_input}"
-
-Current conversation context: {self.get_conversation_context()}
-Conversation count: {self.profile.conversation_count}
-
-Categories to analyze:
-- communication_style: How they express themselves (direct, playful, thoughtful, analytical, casual, etc.)
-- social_preferences: Group vs individual, introvert/extrovert indicators, collaborative vs independent
-- values: What they care about, principles, beliefs, what drives them
-- interests: Hobbies, activities, things they enjoy, passions
-- lifestyle: Daily routines, living preferences, habits, work-life balance
-- relationship_goals: What they want in relationships, partnership style
-- deal_breakers: Things they avoid or dislike, non-negotiables
-
-Return ONLY a JSON object like this:
-{{
-    "communication_style": ["direct", "casual"],
-    "social_preferences": ["independent", "competitive"],
-    "values": ["excellence", "achievement"],
-    "interests": ["math", "coding"],
-    "lifestyle": ["flexible", "focused"],
-    "relationship_goals": ["intellectual connection"],
-    "deal_breakers": ["long explanations"]
-}}
-
-Be specific and insightful. Only return the JSON, no other text."""
-
-        try:
-            response = await self.client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": analysis_prompt}],
-                temperature=0.3,
-                max_tokens=400,
-            )
-            
-            analysis = response.choices[0].message.content.strip()
-            
-            # Try to parse JSON and add insights
-            try:
-                import json
-                insights = json.loads(analysis)
-                
-                # Add insights to profile
-                for category, traits in insights.items():
-                    if isinstance(traits, list):
-                        for trait in traits:
-                            if trait and trait.strip():  # Only add non-empty traits
-                                self.profile.add_insight(category, trait.strip())
-                    else:
-                        if traits and str(traits).strip():
-                            self.profile.add_insight(category, str(traits).strip())
-                        
-            except json.JSONDecodeError:
-                # If JSON parsing fails, add raw analysis to insights
-                self.profile.add_insight("conversation_insights", analysis)
-            
-        except Exception as e:
-            # If analysis fails, continue without it
-            print(f"Analysis failed: {e}")
-            pass
+        # Simple keyword-based analysis for now to avoid API issues
+        user_input_lower = user_input.lower()
+        
+        # Communication style
+        if any(word in user_input_lower for word in ["direct", "straightforward", "honest", "transparent"]):
+            self.profile.add_insight("communication_style", "direct")
+        if any(word in user_input_lower for word in ["casual", "relaxed", "chill", "informal"]):
+            self.profile.add_insight("communication_style", "casual")
+        
+        # Social preferences
+        if any(word in user_input_lower for word in ["small group", "few friends", "intimate", "one-on-one"]):
+            self.profile.add_insight("social_preferences", "small groups")
+        if any(word in user_input_lower for word in ["independent", "alone", "solo", "by myself"]):
+            self.profile.add_insight("social_preferences", "independent")
+        
+        # Values
+        if any(word in user_input_lower for word in ["impact", "help", "difference", "change", "society"]):
+            self.profile.add_insight("values", "making a difference")
+        if any(word in user_input_lower for word in ["honesty", "transparency", "truth", "open"]):
+            self.profile.add_insight("values", "honesty")
+        
+        # Interests
+        if any(word in user_input_lower for word in ["boxing", "sport", "exercise", "training"]):
+            self.profile.add_insight("interests", "boxing")
+        if any(word in user_input_lower for word in ["coding", "programming", "startup", "tech"]):
+            self.profile.add_insight("interests", "technology")
+        if any(word in user_input_lower for word in ["music", "clarinet", "playing", "instrument"]):
+            self.profile.add_insight("interests", "music")
+        
+        # Lifestyle
+        if any(word in user_input_lower for word in ["spontaneous", "adventure", "flexible", "go with flow"]):
+            self.profile.add_insight("lifestyle", "spontaneous")
+        if any(word in user_input_lower for word in ["routine", "schedule", "organized", "planned"]):
+            self.profile.add_insight("lifestyle", "structured")
+        
+        # Relationship goals
+        if any(word in user_input_lower for word in ["shared hobbies", "partner", "relationship", "connection"]):
+            self.profile.add_insight("relationship_goals", "shared interests")
+        if any(word in user_input_lower for word in ["adventure", "spontaneous", "fun", "excitement"]):
+            self.profile.add_insight("relationship_goals", "adventurous partner")
     
     async def chat(self, user_input: str = None) -> str:
         """Send a message to the AI and get a response."""

@@ -44,7 +44,6 @@ def print_help() -> None:
 [bold]Available Commands:[/bold]
 • Just type your message to chat with your AI matchmaker
 • [bold]/help[/bold] - Show this help message
-• [bold]/profile[/bold] - Show your current personality profile
 • [bold]/clear[/bold] - Start a fresh conversation
 • [bold]/info[/bold] - Show conversation info
 • [bold]/quit[/bold] - Exit the application
@@ -60,24 +59,7 @@ def print_help() -> None:
     console.print(panel)
 
 
-def print_profile(assistant: DatingAssistant) -> None:
-    """Print personality profile."""
-    profile = assistant.get_personality_profile()
-    
-    if profile == "Still getting to know this person...":
-        console.print("🤔 Still getting to know you better... Keep chatting!")
-        return
-    
-    profile_text = f"""
-[bold]Your Personality Profile[/bold]
 
-{profile}
-
-[italic]This profile helps us find your perfect match! 💕[/italic]
-    """
-    
-    panel = Panel(profile_text, border_style="blue", title="Personality Profile")
-    console.print(panel)
 
 
 def print_info(assistant: DatingAssistant) -> None:
@@ -119,14 +101,22 @@ async def chat_loop(assistant: DatingAssistant) -> None:
             user_input = Prompt.ask("\n[bold green]You[/bold green]")
             
             if user_input.lower() in ["/exit", "/quit"]:
+                # Show personality summary before exiting
+                profile = assistant.get_personality_profile()
+                if profile != "Still getting to know this person...":
+                    console.print("\n" + "="*80)
+                    console.print("🎭 [bold]Your Personality Profile[/bold]")
+                    console.print("="*80)
+                    console.print(profile)
+                    console.print("="*80)
+                    console.print("[italic]This profile helps us find your perfect match! 💕[/italic]")
+                    console.print("="*80)
                 console.print("\n💕 Thanks for chatting! Your personality profile is ready for matching!")
                 break
             elif user_input.lower() == "/help":
                 print_help()
                 continue
-            elif user_input.lower() == "/profile":
-                print_profile(assistant)
-                continue
+
             elif user_input.lower() == "/clear":
                 assistant.clear_history()
                 console.print("🔄 Starting fresh! Let's get to know you again!")
@@ -161,6 +151,16 @@ async def chat_loop(assistant: DatingAssistant) -> None:
             
             
         except KeyboardInterrupt:
+            # Show personality summary before exiting
+            profile = assistant.get_personality_profile()
+            if profile != "Still getting to know this person...":
+                console.print("\n" + "="*80)
+                console.print("🎭 [bold]Your Personality Profile[/bold]")
+                console.print("="*80)
+                console.print(profile)
+                console.print("="*80)
+                console.print("[italic]This profile helps us find your perfect match! 💕[/italic]")
+                console.print("="*80)
             console.print("\n💕 Thanks for chatting! Your personality profile is ready for matching!")
             break
         except Exception as e:
