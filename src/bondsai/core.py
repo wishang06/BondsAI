@@ -2,6 +2,8 @@
 
 import asyncio
 import json
+import os
+from datetime import datetime
 from typing import List, Dict, Any, Optional
 from openai import AsyncOpenAI
 from .config import config
@@ -38,6 +40,11 @@ class PersonalityProfile:
         }
         self.conversation_count = 0
         self.topics_covered = set()
+        # Basic user info - let AI fill these naturally
+        self.name = ""
+        self.age = ""
+        self.gender = ""
+        self.sexual_orientation = ""
     
     def add_insight(self, category: str, insight: str) -> None:
         """Add a personality insight."""
@@ -47,12 +54,36 @@ class PersonalityProfile:
             else:
                 self.traits[category] = insight
     
+    def set_basic_info(self, name: str = "", age: str = "", gender: str = "", sexual_orientation: str = "") -> None:
+        """Set basic user information."""
+        if name:
+            self.name = name
+        if age:
+            self.age = age
+        if gender:
+            self.gender = gender
+        if sexual_orientation:
+            self.sexual_orientation = sexual_orientation
+    
     def get_summary(self) -> str:
         """Generate a concise personality summary."""
         if self.conversation_count < 3:
             return "Still getting to know this person..."
         
         summary_parts = []
+        
+        # Basic info
+        if self.name:
+            summary_parts.append(f"**Name**: {self.name}")
+        if self.age:
+            summary_parts.append(f"**Age**: {self.age}")
+        if self.gender:
+            summary_parts.append(f"**Gender**: {self.gender}")
+        if self.sexual_orientation:
+            summary_parts.append(f"**Sexual Orientation**: {self.sexual_orientation}")
+        
+        if summary_parts:
+            summary_parts.append("")  # Add spacing
         
         # Personality overview
         personality_traits = []
@@ -82,6 +113,17 @@ class PersonalityProfile:
             summary_parts.append(f"**Deal-breakers**: {', '.join(self.traits['deal_breakers'][:2])}")
         
         return "\n".join(summary_parts) if summary_parts else "Still getting to know this person..."
+    
+    def get_filename(self) -> str:
+        """Generate filename based on user info."""
+        # Only use name for filename, everything else goes in summary
+        if self.name:
+            name_part = self.name.replace(" ", "_")
+        else:
+            name_part = "unknown_user"
+        
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        return f"{name_part}_{timestamp}.txt"
 
 
 class DatingAssistant:
@@ -97,6 +139,7 @@ class DatingAssistant:
         self.profile = PersonalityProfile()
         self.conversation_phase = "introduction"
         self.is_first_message = True
+        self.ready_for_summary = False
         
         # Dating-specific conversation prompts
         self.system_prompt = """You are a charming, friendly, and genuinely curious AI designed to help people find meaningful connections through a dating app. Your role is to:
@@ -112,7 +155,21 @@ class DatingAssistant:
 9. **Gather broad personality insights**: Learn about values, communication style, social preferences, interests, lifestyle, and relationship goals
 10. **Progressive disclosure**: Start light and fun, gradually explore deeper topics
 11. **Be encouraging**: Create a safe space for sharing personal information
-12. **Know when to wrap up**: After 7-10 exchanges, naturally conclude the conversation and mention the personality profile
+12. **Know when to wrap up**: After 10-15 exchanges, naturally conclude the conversation and mention the personality profile
+
+**Personality Analysis**: After each user response, analyze their communication style, tone, and personality traits. Look for:
+- Communication patterns (formal/casual, detailed/brief, emotional/analytical)
+- Language choices (vocabulary level, use of slang, emojis, punctuation)
+- Emotional expression (enthusiastic, reserved, humorous, serious)
+- Social preferences (introvert/extrovert indicators)
+- Values and priorities (what they emphasize, what excites them)
+
+**Basic Info Collection**: Naturally gather basic information throughout the conversation:
+- Name (ask early, but don't force if they don't want to share)
+- Age (can be approximate or range)
+- Gender identity
+- Sexual orientation
+- Collect this information organically as part of the conversation flow
 
 Key traits to identify quickly:
 - Communication style (direct, playful, thoughtful, analytical, etc.)
@@ -124,7 +181,7 @@ Key traits to identify quickly:
 - Personality type indicators (MBTI-style insights)
 
 Complete profile summary:
-- Automatically generate a complete personality profile summary based on the conversation after 7-10 exchanges
+- Automatically generate a complete personality profile summary based on the conversation after 10-15 exchanges
 - Include all personality dimensions, their preferences, and values
 - Have a detailed general description of the person's personality, then mention a few specific interests/habits within a personality category
 - Frame the general description in a way similar to MBTI
@@ -132,8 +189,10 @@ Complete profile summary:
 
 IMPORTANT: 
 - Don't stay on one topic too long
-- Cover as many personality dimensions as possible in 7-10 exchanges
-- When the conversation feels complete (around 7-10 exchanges), naturally conclude and mention that their personality profile will be generated
+- Cover as many personality dimensions as possible in 10-15 exchanges
+- When the conversation feels complete (around 10-15 exchanges), naturally conclude and generate their personality profile
+
+Start the first message in conversation with this exact line: "Hey there! 👋 I'm so excited to get to know you! What's your name and the most interesting thing that happened to you today?"
 
 Keep responses conversational, engaging, and focused on getting to know them better. Use emojis naturally and show genuine curiosity about their responses."""
     
@@ -150,58 +209,52 @@ Keep responses conversational, engaging, and focused on getting to know them bet
         self.profile = PersonalityProfile()
         self.conversation_phase = "introduction"
         self.is_first_message = True
+        self.ready_for_summary = False
     
     def get_conversation_context(self) -> str:
         """Get context about the conversation for personality analysis."""
         if self.profile.conversation_count <= 3:
             return "early_conversation"
-        elif self.profile.conversation_count <= 8:
+        elif self.profile.conversation_count <= 10:
             return "building_connection"
         else:
             return "deep_dive"
     
-    async def analyze_personality(self, user_input: str) -> None:
-        """Analyze user input for personality insights."""
-        # Simple keyword-based analysis for now to avoid API issues
-        user_input_lower = user_input.lower()
-        
-        # Communication style
-        if any(word in user_input_lower for word in ["direct", "straightforward", "honest", "transparent"]):
-            self.profile.add_insight("communication_style", "direct")
-        if any(word in user_input_lower for word in ["casual", "relaxed", "chill", "informal"]):
-            self.profile.add_insight("communication_style", "casual")
-        
-        # Social preferences
-        if any(word in user_input_lower for word in ["small group", "few friends", "intimate", "one-on-one"]):
-            self.profile.add_insight("social_preferences", "small groups")
-        if any(word in user_input_lower for word in ["independent", "alone", "solo", "by myself"]):
-            self.profile.add_insight("social_preferences", "independent")
-        
-        # Values
-        if any(word in user_input_lower for word in ["impact", "help", "difference", "change", "society"]):
-            self.profile.add_insight("values", "making a difference")
-        if any(word in user_input_lower for word in ["honesty", "transparency", "truth", "open"]):
-            self.profile.add_insight("values", "honesty")
-        
-        # Interests
-        if any(word in user_input_lower for word in ["boxing", "sport", "exercise", "training"]):
-            self.profile.add_insight("interests", "boxing")
-        if any(word in user_input_lower for word in ["coding", "programming", "startup", "tech"]):
-            self.profile.add_insight("interests", "technology")
-        if any(word in user_input_lower for word in ["music", "clarinet", "playing", "instrument"]):
-            self.profile.add_insight("interests", "music")
-        
-        # Lifestyle
-        if any(word in user_input_lower for word in ["spontaneous", "adventure", "flexible", "go with flow"]):
-            self.profile.add_insight("lifestyle", "spontaneous")
-        if any(word in user_input_lower for word in ["routine", "schedule", "organized", "planned"]):
-            self.profile.add_insight("lifestyle", "structured")
-        
-        # Relationship goals
-        if any(word in user_input_lower for word in ["shared hobbies", "partner", "relationship", "connection"]):
-            self.profile.add_insight("relationship_goals", "shared interests")
-        if any(word in user_input_lower for word in ["adventure", "spontaneous", "fun", "excitement"]):
-            self.profile.add_insight("relationship_goals", "adventurous partner")
+    def save_profile_to_file(self) -> str:
+        """Save the personality profile to a text file."""
+        try:
+            # Ensure user_info directory exists
+            user_info_dir = "user_info"
+            if not os.path.exists(user_info_dir):
+                os.makedirs(user_info_dir)
+            
+            # Generate filename
+            filename = self.profile.get_filename()
+            filepath = os.path.join(user_info_dir, filename)
+            
+            # Create profile content
+            profile_content = f"""BONDSAI PERSONALITY PROFILE
+Generated on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+Conversation Length: {self.profile.conversation_count} exchanges
+
+{self.profile.get_summary()}
+
+---
+Full Conversation History:
+"""
+            
+            # Add conversation history
+            for i, message in enumerate(self.messages, 1):
+                profile_content += f"\n{i}. {message.role.upper()}: {message.content}\n"
+            
+            # Write to file
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(profile_content)
+            
+            return filepath
+            
+        except Exception as e:
+            return f"Error saving profile: {str(e)}"
     
     async def chat(self, user_input: str = None) -> str:
         """Send a message to the AI and get a response."""
@@ -209,15 +262,22 @@ Keep responses conversational, engaging, and focused on getting to know them bet
         # If this is the first message, initiate the conversation
         if self.is_first_message:
             self.is_first_message = False
-            initial_message = "Hey there! 👋 I'm so excited to get to know you! What's the most interesting thing that happened to you today?"
+            initial_message = "Hey there! 👋 I'm so excited to get to know you! What's your name?"
             self.add_message("assistant", initial_message)
             return initial_message
         
         # Add user message to history
         if user_input:
             self.add_message("user", user_input)
-            # Analyze personality from user input
-            await self.analyze_personality(user_input)
+        
+        # Check if conversation is ready to end (10-15 exchanges)
+        if self.profile.conversation_count >= 10 and not self.ready_for_summary:
+            self.ready_for_summary = True
+            # Save profile to file
+            filepath = self.save_profile_to_file()
+            ending_message = f"Thank you so much for sharing with me! 💕 I've learned so much about you and created a personality profile. It's been saved to: {filepath}\n\nHere's a quick summary of what I discovered about you:\n\n{self.profile.get_summary()}\n\nI hope this helps you find meaningful connections! 🌟"
+            self.add_message("assistant", ending_message)
+            return ending_message
         
         # Prepare messages for OpenAI API with system prompt
         messages = [{"role": "system", "content": self.system_prompt}]
