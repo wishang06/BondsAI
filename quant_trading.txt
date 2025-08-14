@@ -1,0 +1,206 @@
+Optiver Behavioural Interview
+A. Interview Structure & Logistics
+1.	Duration & Format
+– 15 minutes, virtual or in office behavioural/technical mix
+– Expect ~6–8 questions: a blend of behavioural (STAR) and quick technical/brainteasers
+2.	Preparation Materials
+– One pager “cheat sheet”:
+• 3 STAR stories (see below)
+• 1 brainteaser scaffold (“planes in sky”)
+• 3 bullet point “Why Optiver?” pitches
+• Optiver values & your alignment keywords
+– Your CV on screen for easy reference
+– Quiet space, water, stopwatch for timed practice
+________________________________________
+B. Deep Dive: Optiver & FutureFocus
+1.	FutureFocus Trading & Research
+– 5 day intensive: hands on market making simulations, mentorship with ex traders/engineers, exposure to Optiver’s live systems
+– Direct pipeline to 2026/27 Summer Internship for top performers
+2.	Core Values & Key Skills
+Value	What It Means	How You Demonstrate It
+Collaborative Thinkers	Best ideas via teamwork	• AI Engineer Trainee: integrated LLM pipelines with a 10 member team• Secretary, Hanfu Assoc.: coordinated events with UMSU, 200+ attendees
+Continuous Learners	Always upskilling	• WAM 93.50 in Probability, Stochastic Modelling• CISSA CodeBrew hackathon winner: self learned new libraries
+Challenge Seekers	Thrive on complexity	• IMC Trading Simulation (Top 5): pivoted strategy under time pressure• WorldQuant BRAIN finalist
+Entrepreneurial Spirits	Own your book & ideas	• Built FlashLingua app end to end• Led cultural workshops and flashcard app launches
+3.	Why Optiver + Why FutureFocus?
+– Combines rapid, data driven decision making with deep market making expertise
+– Immersive simulations let you “try before you intern”
+– Mentorship accelerates the jump from theory/competitions to live trading
+________________________________________
+C. Mapping Your Resume → STAR Stories
+Situation (S)	Task (T)	Action (A)	Result (R)
+1. IMC Trading Simulation 10 minutes left, –5% P&L	Recoup losses & finish strong	Delegated back testing; implemented mean reversion algorithm; recalibrated thresholds in real time	Swung to +2% P&L; top 5 nationally
+2. AI Engineer Trainee Winter program, DS Students Society	Build real time predictive pipeline	Architected LLM based feature extractor; containerised code; integrated with SQL and streaming data	Delivered MVP in 5 weeks; presented to 50+ society members
+3. Secretary, Melbourne Hanfu Assoc. Planning 200 attendee event	Secure venue, sponsors, schedule	Negotiated UMSU venue booking; managed team of 5; coordinated marketing via social media & email	Sold out event; 95% positive feedback in post event survey
+Tip: Memorise each bullet’s core metrics (e.g. “200 attendees,” “Top 5,” “5 weeks,” “93.50 WAM”).
+
+*IMC Key Point: One of the first trading firms to implement the use of technology back in the 90s. Still keen on innovations and frequently adopts the newest technologies.
+
+Value	How IMC describes it	How you demonstrate it
+Curiosity	Always asking "Why?"	WorldQuant, Algothon, AI engineering, poker
+Initiative	Don't wait to be told	Self-started projects like FlashLingua, DS Trainee
+Team-first mindset	Work together to win	AI pipeline team, Hanfu event logistics
+Love of problem-solving	Enjoy tackling hard things	IMC Simulation, CodeBrew, quant strategy building
+Growth mindset	Learn fast, bounce back	Iteration on AI tools, performance tuning
+
+________________________________________
+D. Technical & Market Knowledge
+1.	Brainteaser Framework
+o	Clarify: Ask any quick clarifications (“Time horizon? Data sources?”)
+o	Model: State assumptions (e.g. planes ≈10,000; arrivals follow Poisson)
+o	Control: Define bid ask spread (±500 planes), inventory cap (±1,000)
+o	Mitigate: Widen spreads under volatility; hedge with correlated instruments
+2.	Key Concepts to Nail
+o	Market Making: Liquidity provision, bid ask spread, inventory/risk management
+o	The Greeks: Intuition behind Δ, Γ, Θ, VEGA, RHO
+o	Options Fundamentals: Premium, intrinsic vs. time value, basic payoff charts
+o	Current Markets: (brief bullet) e.g. “Recent rates volatility; AI hype in tech stocks”
+________________________________________
+E. Sample Q&A Templates
+💡 Why Optiver?
+Optiver stands out to me because of how strongly its culture revolves around real ownership, constant improvement and entrepreneurship spirit, especially right now when technologies such as AI, machine learning and even quantum computing has been progressing faster than it ever has before, being able to constantly innovate and adapt to these new technologies is what gives traders the real edge in the market. 
+I’m someone who thrives in collaborative environments, and Optiver’s structure — where not only the traders, but also researchers, engineers and various other teams are tightly integrated in their work— is exactly the kind of place where I think I could grow the most. 
+From everything I’ve read, heard, and experienced, Optiver doesn’t just look for talent, it invests in it — and that’s exactly the kind of team I want to be part of – a team that places not only faith, but also responsibility and expectation on its members.
+
+“Why IMC?”
+What draws me to IMC is the combination of high-performance decision-making with a collaborative, fun, and intellectually open environment. I’ve followed IMC for a while—from doing the trading simulation (where I placed Top 5) to reading about the firm’s tech infrastructure and commitment to mentorship—and I’ve always been impressed by how you approach trading as a dynamic, team-driven problem. I’m excited about Launchpad because it’s not just an intro to trading, it’s a hands-on chance to work with some of the best minds in quant finance and see how ideas evolve in real markets.
+*IMC Key Point: One of the first trading firms to implement the use of technology back in the 90s. Still keen on innovations and frequently adopts the newest technologies.
+
+
+
+What excites me most is the balance Optiver strikes: a deeply competitive, high-performance atmosphere, but still one that’s generous with knowledge and built on shared improvement. I’ve always gravitated towards challenge-seeking communities that reward curiosity and initiative. 
+________________________________________
+📊 Why Quant Trading?
+Quant trading, to me, is the perfect storm of what I admire in a job: real-time pressured decision-making that must not only rely on instinct, but be backed up by logical reasoning based on data, probability. There’s something incredibly satisfying about turning noisy, complex – almost unpredictable - market data into structured decisions — and doing so not just with a logical plan at the start, but to follow through with conviction and truly owning your decisions. I love the idea of backing my reasoning with real risks, not just theoretical ideas.
+Another part I like about Quant Trading, is its collaborative nature. I own most of my extracurricular achievements, from hackathons to being an AI Engineer at my uni’s data science society, to teamwork and collaboration. I love how quant trading emphasises this sense of teamwork, especially in a firm such as Optiver where the best people with varying differences in skillsets are gathered.
+
+
+What drew me in was the blend of theory and instinct. It’s not just about finding the expected value — it’s knowing when to trust it, when to override it, and how to adjust in milliseconds. The self-contained nature of the role — owning a strategy, a book, and the outcomes — is something that genuinely motivates me. I want to work in a space where I’m constantly tested, but also constantly learning, surrounded by others who value the same.
+________________________________________
+🔍 Other Questions + Sample Responses
+“What makes a good trader?”
+A good trader isn’t just someone with sharp math skills — it’s someone who’s adaptable, fast-thinking, and always learning. I think humility is underrated in trading: knowing when to double down on an edge and when to walk away. The best traders I admire are those who make bold decisions but can still admit when they’re wrong and recalibrate. They’re also relentless about improving — both their models and themselves.
+They also collaborate. Especially at firms like Optiver, I see that the best ideas don’t come from silos, they come from teams pushing and challenging each other.
+________________________________________
+“Tell me about a time you took initiative.”
+Last winter break, I participated in a month long winter program about AI engineering, purely out of interest and not related to my actual academic classes at uni. The capstone project of this winter program, without being overly technical, was simply to create a prototype LLM engine that takes in an input alongside context information and return the output in the terminal. But, after I finished my prototype, I thought that there was more I could do, using both my existing skills but also my desire to learn and implement new knowledge – self-learnt or taught. So, in the end, I was able to configure my prototype to be fully postgres database connected, in its inputs and outputs. And I believe it was this initiative that landed me the role as a core AI Engineer alongside the masters students in the society.
+That’s why the entrepreneurial spirit at Optiver appeals to me — it’s the kind of environment where I’d thrive.
+________________________________________
+“What is a weakness of yours?”
+Earlier on, I used to struggle with letting go of ideas that I’d spent a lot of time on, even when the evidence suggested they weren’t working. In a competitive space like trading, that kind of attachment can be dangerous. So I’ve been actively training myself to detach from sunk costs — to evaluate ideas based on what they are now, not how much time I’ve spent on them. Competing in trading competitions like IMC and WorldQuant BRAIN really helped me with this — because the feedback loop is immediate and unforgiving. I’m still improving on it, but I now actively seek feedback from others and try to invalidate my own assumptions early.
+________________________________________
+“Why did you choose your degree/major?”
+For me, Data Science wasn’t just about job prospects—it was about combining two things I enjoy: maths with its structured logic, and computer science with its real-world applications. I’ve always liked taking big, messy systems and trying to understand them through data—whether it’s player patterns in poker games or market behaviour in a simulation. It gives me both the toolkit and the mental framework to work in so many different fields like trading and also explore broader applications like AI and research.
+
+“Could you go into detail about any Math/Coding Competitions you have done?”
+School Maths Olympiad – Found the advantages of working in a team
+CodeBrew – Flashlingua (turning experiences into new innovations)
+Susquehanna Algothon
+
+“What is your aim for scores? Why do you want a score so high?”
+I aim for 90+ not just for the mark itself, but because I’m the kind of person who likes to know that I’ve fully understood a topic. I’ve found that the habits you build when aiming high—whether that’s attention to detail, review cycles, or problem-solving depth—carry into every other part of life. I also think being consistent under pressure is a key part of trading, and aiming for high academic scores is one way I train that mindset.
+
+“What are your hobbies and how do they relate to trading?”
+I play poker and blackjack with friends — and I think the link to trading is obvious: risk, edge, and psychology. You have to know the math, but you also have to read people and context. It’s about knowing your edge and pressing it when the time’s right, but also walking away when the odds are off. I’ve also played music for years — and it’s taught me a lot about rhythm, attention, and staying in flow under pressure. Oddly enough, it’s great mental training for staying calm during volatility.
+
+1.	“Tell me about a time you failed or faced a setback.”
+“During the FlashLingua launch, our user feedback loop revealed severe UX issues. I quickly convened my team, mapped top three pain points, and released an update within two days. While we missed our initial download target, ratings improved from 2.8 to 4.5 stars, teaching me the importance of rapid iteration.”
+2.	“What is your greatest strength?”
+“My strength is resilience under pressure. 
+-	Time Pressure: exams, competitions
+-	Stress, workload
+3.	“What is your weakness?”
+“I don’t have enough practical, real-life experience. As a first year student, I don’t really have a background in trading and most of my experiences so far are theoretical or academic. So, I think this opportunity to participate in FutureFocus at Optiver, with its market-making games and learning under real traders is perfect for me.
+
+“I sometimes over optimize code for edge cases. To balance speed and quality, I now set strict time boxes and prioritise features by impact—ensuring we ship quickly without compromising core functionality.”
+4.	“Make me a market on airplanes in the sky.”
+– See D.1 above.
+5.	“Why FutureFocus Trading & Research?”
+“After honing my skills in the Susquehanna Algothon and building live data pipelines as an AI Engineer Trainee, I want to see how these approaches perform in a real trading environment. FutureFocus’s combination of simulation, mentorship, and direct pathway to internship is the fastest way to bridge my competition success with professional trading.”
+________________________________________
+F. Final Drill & Mindset
+1.	Timed Mock (15 min)
+o	2 min : “Why Optiver?” + “Why FutureFocus?”
+o	4 min : STAR questions (2 stories)
+o	4 min : Brainteasers (planes + one Greek)
+o	3 min : Personal questions (“Strength/Weakness,” “Hobbies”)
+o	2 min : Recap your bullet sheet
+2.	On the Day
+o	Calm start: Deep breaths, water sip, 10 sec gaze at cheat sheet
+o	Energy & pace: Smile, modulate voice—avoid monotone
+o	Concise structure: 45–60 sec per answer, clear STAR or “Point → Example → Link back” format
+o	Engage: End with one thoughtful question (“Which skill sets top performers sharpen most during FutureFocus?”)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Screening Interview: A mix of behavioural and technical questions. The behavioural qs were mostly about my resume, and certain personality traits that I have. The technical qs were simple brainteasers and application of expected value, nothing too hard.
+https://womenintechunimelb.substack.com/p/preparing-for-the-behavioural-interview?r=5fwevw&utm_campaign=post&utm_medium=web&triedRedirect=true
+
+“The only constant in markets is change, and keeping up requires nimble, decisive thinkers — a pretty accurate description of an Optiver trader.”
+
+Optiver’s traders combine a passion for quantitative problem solving with razor-sharp decision-making skills. Our global trading teams are experts at reacting to current events, price changes and market shifts to ensure effective trade execution around the clock. But they’re also continually refining and developing our trading strategies with the help of in-house and external data. Entrepreneurial to the core, Optiver’s traders manage their own trading books, teams and activities, as well as the risk that accompanies them.
+Our teams are deliberately structured to encourage collaborative problem solving between traders, researchers and engineers. Working closely across multiple departments is one way we ensure continuous innovation and improvement.
+
+Values:
+•	Collaborative Thinkers
+While most of our people are competitive at heart, we still believe that our best work is done together. Our unique internal culture fosters an environment that not only accepts working together on projects but encourages it.
+•	Continuous Learners
+At Optiver, continuous innovation is the name of the game. Whether it’s Trading, Technology, Compliance, Risk or Business Operations, our flexible career paths provide opportunities for our people to continuously improve upon and fine tune their skills.
+•	Challenge Seekers
+The strategies and technology we deploy to keep the markets stable are deeply complex. Our people thrive on finding ways to do all of these things faster, smarter and more efficiently — every single day.
+•	Entrepreneurial Spirits
+While we take measures to mitigate risk as a business, we encourage our people to step out of their comfort zones as often as they can. The sharing of ideas can come from any and everyone, and we take pride in our people feeling comfortable to openly do so to explore new opportunities and unlock new potential.
+
+Key Skills:
+•	Quantitative reasoning – Drawing logical conclusions from market behaviour and data.
+•	Curiosity – Being inquisitive about how things work and constantly seeking better ways to do them.
+•	Data analytics – Leveraging data to improve decision-making, identify inefficiencies, and enhance trading systems.
+
+
+
+Stage 2: HR Interview
+If you successfully navigate the online assessments, you move on to the HR interview. The HR interview at Optiver is a critical component of the selection process, designed to assess not just your technical capabilities, but also your motivation, cultural fit, and overall understanding of the trading industry. This interview goes beyond the usual resume walkthrough and delves into your personal attributes, your genuine interest in Optiver and trading, and your knowledge about market trends and theories. Let us explore the key focus points for this stage:
+
+1. Motivational and Content-Driven Focus: The HR interview usually starts with a strong emphasis on your motivation and reasons for applying to Optiver. Questions like "Why do you want to work at Optiver?" and "Why choose Optiver over others?" probe into your understanding of the company and your genuine interest in being a part of it.
+
+2. Understanding of Market Dynamics: The interview also touches upon current market trends and basic trading concepts. Questions such as "What is going on in the markets right now?" and "What do you know about options?" assess your market awareness and your grasp of essential trading principles like option theory and market making.
+
+3. Personal Evaluation: The HR interview is keenly focused on you as an individual. Questions like "What are your weaknesses?" or "How do your friends describe you?" are aimed at understanding your self-awareness and personal attributes. Similarly, inquiries about hobbies or leisure activities provide a glimpse into your personality and life outside academics or professional work.
+
+4. Behavioral Assessment: Questions like "Have you worked in teams?" or "What is the hardest thing you’ve ever done?" are designed to evaluate your teamwork abilities, problem-solving skills, and resilience – all crucial traits for a successful career in trading.
+
+5. Technical Understanding & Analytical Skills: The interview may include brainteasers or numerical questions to assess your analytical thinking and problem-solving skills. Things to be expected are questions like "Make me a market on the number of planes currently in the air" or a probability brainteaser to test your ability to think on your feet and your understanding of trading concepts.
+
+6. Knowledge of Financial Markets and Instruments: You are expected to have a solid understanding of financial markets and instruments. Questions such as "What is Market Making?" or "What are the Greeks?" test your knowledge of trading terminologies and concepts.
+
+7. Alignment with Optiver’s Culture and Values: The HR interview is not just about assessing your skills and knowledge, but also about gauging your alignment with Optiver’s culture and values. Questions like "What do you think makes a good trader?" or "What are 5 qualities that are important to being a trader?" aim to understand if your personal and professional traits align with what Optiver seeks in its traders.
+
+You are advised to prepare thoroughly for this stage, not just by understanding Optiver’s business and the trading industry, but also by introspecting on your own motivations, strengths, weaknesses, and personal experiences.
+

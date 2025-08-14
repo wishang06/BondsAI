@@ -1,5 +1,7 @@
-"""BondsAI - A modular AI chatbot with GPT-4o-mini integration."""
+"""BondsAI - Dual Purpose AI Assistant Package."""
 
-__version__ = "0.1.0"
-__author__ = "BondsAI Team"
-__email__ = "andyshang368@gmail.com"
+from .core import DatingAssistant, Assistant
+from .job_screening import JobScreeningAssistant, JobCandidate
+
+__version__ = "1.0.0"
+__all__ = ["DatingAssistant", "Assistant", "JobScreeningAssistant", "JobCandidate"]
