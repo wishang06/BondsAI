@@ -113,19 +113,18 @@ class DatingAssistant:
 11. **Be encouraging**: Create a safe space for sharing personal information
 12. **Know when to wrap up**: After 10-15 exchanges, naturally conclude the conversation and mention the personality profile
 
+**CRITICAL - Basic Info Collection**: Before ending the conversation (around 8-9 exchanges), you MUST ask for these basic pieces of information:
+- Age (can be approximate or range)
+- Gender identity
+- Sexual orientation
+- Ask these questions naturally and conversationally, not as a formal survey
+
 **Personality Analysis**: After each user response, analyze their communication style, tone, and personality traits. Look for:
 - Communication patterns (formal/casual, detailed/brief, emotional/analytical)
 - Language choices (vocabulary level, use of slang, emojis, punctuation)
 - Emotional expression (enthusiastic, reserved, humorous, serious)
 - Social preferences (introvert/extrovert indicators)
 - Values and priorities (what they emphasize, what excites them)
-
-**Basic Info Collection**: Naturally gather basic information throughout the conversation:
-- Name (ask early, but don't force if they don't want to share)
-- Age (can be approximate or range)
-- Gender identity
-- Sexual orientation
-- Collect this information organically as part of the conversation flow
 
 Key traits to identify quickly:
 - Communication style (direct, playful, thoughtful, analytical, etc.)
@@ -147,6 +146,7 @@ IMPORTANT:
 - Don't stay on one topic too long
 - Cover as many personality dimensions as possible in 10-15 exchanges
 - When the conversation feels complete (around 10-15 exchanges), naturally conclude and generate their personality profile
+- **MUST ask for age, gender, and sexual orientation before ending the conversation**
 
 Start the first message in conversation with this exact line (in one message): "Hey there! 👋 I'm so excited to get to know you! What's your name and the most interesting thing that happened to you today?"
 
@@ -256,20 +256,84 @@ Full Conversation History:
         if user_input:
             self.add_message("user", user_input)
             
-            # Try to extract name from user input (simple extraction)
+            # Try to extract name from user input (improved extraction)
             if not self.profile.name and self.profile.conversation_count <= 2:
                 user_input_lower = user_input.lower()
                 if "i'm" in user_input_lower or "i am" in user_input_lower or "my name is" in user_input_lower:
                     words = user_input.split()
                     for i, word in enumerate(words):
                         if word.lower() in ["i'm", "am", "name", "is"] and i + 1 < len(words):
-                            potential_name = words[i + 1].strip(".,!?")
-                            if len(potential_name) > 1 and potential_name.isalpha():
-                                self.profile.set_basic_info(name=potential_name)
-                                break
+                            # Extract potential name (could be multiple words)
+                            potential_name_parts = []
+                            j = i + 1
+                            while j < len(words) and (words[j].isalpha() or words[j] in ["-", "'"]):
+                                potential_name_parts.append(words[j])
+                                j += 1
+                            if potential_name_parts:
+                                potential_name = " ".join(potential_name_parts).strip(".,!?")
+                                if len(potential_name) > 1:
+                                    self.profile.set_basic_info(name=potential_name)
+                                    break
+            
+            # Try to extract basic info from user responses
+            user_input_lower = user_input.lower()
+            
+            # Extract age - look for numbers that could be ages (13-99)
+            if not self.profile.age:
+                import re
+                age_match = re.search(r'\b(1[3-9]|[2-9]\d)\b', user_input_lower)
+                if age_match:
+                    self.profile.set_basic_info(age=age_match.group(1))
+            
+            # Extract gender
+            if not self.profile.gender:
+                gender_keywords = {
+                    "male": "male", "man": "male", "guy": "male", "boy": "male", "dude": "male",
+                    "female": "female", "woman": "female", "girl": "female", "lady": "female",
+                    "non-binary": "non-binary", "nonbinary": "non-binary", "nb": "non-binary",
+                    "trans": "transgender", "transgender": "transgender"
+                }
+                for keyword, gender in gender_keywords.items():
+                    if keyword in user_input_lower:
+                        self.profile.set_basic_info(gender=gender)
+                        break
+            
+            # Extract sexual orientation
+            if not self.profile.sexual_orientation:
+                orientation_keywords = {
+                    "straight": "straight", "heterosexual": "straight",
+                    "gay": "gay", "lesbian": "lesbian",
+                    "bisexual": "bisexual", "bi": "bisexual",
+                    "pansexual": "pansexual", "pan": "pansexual",
+                    "asexual": "asexual", "ace": "asexual"
+                }
+                for keyword, orientation in orientation_keywords.items():
+                    if keyword in user_input_lower:
+                        self.profile.set_basic_info(sexual_orientation=orientation)
+                        break
+                # Check for "like girls" or "like guys" patterns
+                if "like girls" in user_input_lower or "like women" in user_input_lower:
+                    self.profile.set_basic_info(sexual_orientation="straight")
+                elif "like guys" in user_input_lower or "like men" in user_input_lower:
+                    self.profile.set_basic_info(sexual_orientation="gay")
         
         # Check if conversation is ready to end (10-15 exchanges)
         if self.profile.conversation_count >= 10 and not self.ready_for_summary:
+            # Check if we have basic info, if not, let the AI continue to ask for it
+            if not self.profile.age or not self.profile.gender or not self.profile.sexual_orientation:
+                # Let the AI continue to ask for basic info
+                pass
+            else:
+                # All basic info collected, end conversation immediately
+                self.ready_for_summary = True
+                # Save profile to file
+                filepath = await self.save_profile_to_file()
+                ending_message = f"Thank you so much for sharing with me! 💕 I've learned so much about you and created a personality profile. It's been saved to: {filepath}\n\nI hope this helps you find meaningful connections! 🌟"
+                self.add_message("assistant", ending_message)
+                return ending_message
+        
+        # Check if conversation has gone too long (15+ exchanges) and force end
+        if self.profile.conversation_count >= 15 and not self.ready_for_summary:
             self.ready_for_summary = True
             # Save profile to file
             filepath = await self.save_profile_to_file()
