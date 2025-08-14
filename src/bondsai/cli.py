@@ -52,7 +52,7 @@ def print_help() -> None:
 • Your AI will ask you thoughtful questions to get to know you
 • Be yourself and share openly - this helps create better matches!
 • The conversation will feel natural and engaging
-• After 7-10 exchanges, you'll get a personality summary
+• After 10-15 exchanges, you'll get a personality summary
     """
     
     panel = Panel(help_text, border_style="yellow", title="Help")
