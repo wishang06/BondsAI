@@ -20,6 +20,18 @@ CORS(app)  # Enable CORS for frontend integration
 dating_assistant = DatingAssistant()
 job_assistant = JobScreeningAssistant()
 
+@app.route('/')
+def index():
+    return app.send_static_file("index.html")
+
+@app.route('/styles.css')
+def styles():
+    return app.send_static_file("styles.css")
+
+@app.route('/script.js')
+def script():
+    return app.send_static_file("script.js")
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     """Health check endpoint."""
