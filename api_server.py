@@ -9,17 +9,20 @@ from flask_cors import CORS
 import sys
 import os
 import glob
+from datetime import datetime
 
 # Add the src directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 from bondsai.job_screening import JobScreeningAssistant
+from server.DeltaTimeRecorder import DeltaTimeRecorder
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend integration
 
 # Global instances to maintain conversation state
 job_assistant = JobScreeningAssistant()
+candidate_conversation_timer = DeltaTimeRecorder()
 
 @app.route('/')
 def index():
@@ -107,6 +110,7 @@ def reset_job():
 @app.route('/api/job/start', methods=['GET'])
 def start_job():
     """Get the initial job screening message."""
+    candidate_conversation_timer.update()
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
