@@ -13,7 +13,7 @@ body {
 /* Logo Section */
 .logo-section {
     height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #699eee 0%, #c3cfe2 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -420,7 +420,7 @@ body {
 
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    50% { transform: scale(1.1); }
 }
 
 @keyframes float {
