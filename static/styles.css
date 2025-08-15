@@ -58,6 +58,17 @@ a {
     text-decoration: none;
 }
 
+.name-input {
+    width: 50%;
+    padding: 10px;
+    border: 2px solid #699eee;
+    border-radius: 25px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+
+}
+
 /* Chat Sections */
 .chat-section {
     height: 100vh;
