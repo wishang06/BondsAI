@@ -16,6 +16,7 @@ class BondsAI {
         this.setupChatHandlers();
         this.setupKeyboardHandlers();
         this.loadInitialMessages();
+        this.resetConversation();
         
         // Set initial scroll position to logo section
         document.getElementById('logo-section').scrollIntoView();
@@ -271,9 +272,9 @@ class BondsAI {
     }
 
     // Utility method to reset conversations
-    async resetConversation(type) {
+    async resetConversation() {
         try {
-            const response = await fetch(`${this.API_BASE}/api/${type}/reset`, {
+            const response = await fetch(`${this.API_BASE}/api/job/reset`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -283,18 +284,10 @@ class BondsAI {
             if (response.ok) {
                 this.clearMessages(type);
                 // Reload initial message
-                if (type === 'dating') {
-                    const startResponse = await fetch(`${this.API_BASE}/api/dating/start`);
-                    if (startResponse.ok) {
-                        const data = await startResponse.json();
-                        this.addMessageToUI('dating', data.message, 'ai');
-                    }
-                } else {
-                    const startResponse = await fetch(`${this.API_BASE}/api/job/start`);
-                    if (startResponse.ok) {
-                        const data = await startResponse.json();
-                        this.addMessageToUI('job', data.message, 'ai');
-                    }
+                const startResponse = await fetch(`${this.API_BASE}/api/job/start`);
+                if (startResponse.ok) {
+                    const data = await startResponse.json();
+                    this.addMessageToUI('job', data.message, 'ai');
                 }
             }
         } catch (error) {
