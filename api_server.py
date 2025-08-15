@@ -97,46 +97,12 @@ def job_chat():
         print(f"Error in job chat: {str(e)}")
         return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
-@app.route('/api/dating/reset', methods=['POST'])
-def reset_dating():
-    """Reset dating conversation."""
-    global dating_assistant
-    dating_assistant.clear_history()
-    return jsonify({"message": "Dating conversation reset"})
-
 @app.route('/api/job/reset', methods=['POST'])
 def reset_job():
     """Reset job screening conversation."""
     global job_assistant
     job_assistant.clear_history()
     return jsonify({"message": "Job screening conversation reset"})
-
-@app.route('/api/dating/start', methods=['GET'])
-def start_dating():
-    """Get the initial dating message."""
-    try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        
-        try:
-            # Get the initial message
-            initial_message = loop.run_until_complete(dating_assistant.chat())
-            
-            response = {
-                "message": initial_message,
-                "isComplete": False,
-                "profile": None,
-                "conversation_count": 0
-            }
-            
-            return jsonify(response)
-            
-        finally:
-            loop.close()
-            
-    except Exception as e:
-        print(f"Error starting dating chat: {str(e)}")
-        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
 @app.route('/api/job/start', methods=['GET'])
 def start_job():
