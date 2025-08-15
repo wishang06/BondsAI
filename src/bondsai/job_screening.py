@@ -266,6 +266,35 @@ Full Interview Transcript:
         except Exception as e:
             return f"Error saving assessment: {str(e)}"
     
+    async def extract_candidate_name(self) -> None:
+        """Extract candidate name from conversation using AI."""
+        if self.candidate.name or len(self.messages) < 2:
+            return
+        
+        try:
+            # Create a prompt to extract the candidate's name
+            name_extraction_prompt = f"""Based on this conversation, what is the candidate's name? 
+            
+Conversation:
+{chr(10).join([f"{msg['role'].upper()}: {msg['content']}" for msg in self.messages[-4:]])}
+
+Please respond with just the candidate's first and last name, or "Unknown" if no name was mentioned.
+Examples: "John Smith", "Sarah Johnson", "Unknown" """
+
+            response = await self.client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": name_extraction_prompt}],
+                temperature=0.1,
+                max_tokens=50,
+            )
+            
+            extracted_name = response.choices[0].message.content.strip()
+            if extracted_name and extracted_name.lower() != "unknown" and len(extracted_name.split()) <= 3:
+                self.candidate.name = extracted_name
+                
+        except Exception as e:
+            print(f"Error extracting candidate name: {str(e)}")
+
     async def chat(self, user_input: str = None) -> str:
         """Send a message to the AI and get a response."""
         
@@ -279,6 +308,10 @@ Full Interview Transcript:
         # Add user message to history
         if user_input:
             self.add_message("user", user_input)
+            
+            # Try to extract candidate name from early messages
+            if self.candidate.conversation_count <= 3:
+                await self.extract_candidate_name()
         
         # Check if conversation is ready to end (10-15 exchanges)
         if self.candidate.conversation_count >= 10 and not self.ready_for_assessment:

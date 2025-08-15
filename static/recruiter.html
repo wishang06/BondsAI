@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BondsAI - Recruiter Dashboard</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .recruiter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        .header h1 {
+            color: #3b82f6;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        .applicants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .applicant-bubble {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid #3b82f6;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .applicant-bubble:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.2);
+        }
+
+        .applicant-bubble::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .applicant-bubble:hover::before {
+            left: 100%;
+        }
+
+        .applicant-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+
+        .applicant-info {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .applicant-score {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #10b981;
+            margin-top: 10px;
+        }
+
+        .characteristics-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #3b82f6;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover {
+            color: #3b82f6;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            color: #3b82f6;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .characteristics-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #3b82f6;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 5px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .skill-item {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3b82f6;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .skill-name {
+            color: #3b82f6;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .skill-score {
+            color: #10b981;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .insights-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .insights-list li {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3b82f6;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-applicants {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+
+        .no-applicants h3 {
+            color: #3b82f6;
+            margin-bottom: 15px;
+        }
+
+        .refresh-button {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .refresh-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .recruiter-container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .applicants-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="recruiter-container">
+        <div class="header">
+            <h1>🏢 Recruiter Dashboard</h1>
+            <p>Review candidate assessments and characteristics</p>
+        </div>
+
+        <div id="loading" class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading applicant data...</p>
+        </div>
+
+        <div id="applicants-container" style="display: none;">
+            <div class="applicants-grid" id="applicants-grid">
+                <!-- Applicant bubbles will be populated here -->
+            </div>
+        </div>
+
+        <div id="no-applicants" class="no-applicants" style="display: none;">
+            <h3>No Applicants Yet</h3>
+            <p>No job interviews have been completed yet. Applicants will appear here after they complete their AI interviews.</p>
+            <button class="refresh-button" onclick="loadApplicants()">Refresh</button>
+        </div>
+    </div>
+
+    <!-- Characteristics Modal -->
+    <div id="characteristics-modal" class="characteristics-modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <h2 id="modal-candidate-name">Candidate Name</h2>
+                <p id="modal-candidate-info">Interview completed</p>
+            </div>
+            <div id="modal-characteristics-content">
+                <!-- Characteristics content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let applicantsData = [];
+
+        // Load applicants when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadApplicants();
+        });
+
+        async function loadApplicants() {
+            const loading = document.getElementById('loading');
+            const container = document.getElementById('applicants-container');
+            const noApplicants = document.getElementById('no-applicants');
+            
+            loading.style.display = 'block';
+            container.style.display = 'none';
+            noApplicants.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/recruiter/applicants');
+                const data = await response.json();
+                
+                if (data.applicants && data.applicants.length > 0) {
+                    applicantsData = data.applicants;
+                    displayApplicants(data.applicants);
+                    container.style.display = 'block';
+                } else {
+                    noApplicants.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading applicants:', error);
+                noApplicants.style.display = 'block';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function displayApplicants(applicants) {
+            const grid = document.getElementById('applicants-grid');
+            grid.innerHTML = '';
+
+            applicants.forEach((applicant, index) => {
+                const bubble = document.createElement('div');
+                bubble.className = 'applicant-bubble';
+                bubble.onclick = () => showCharacteristics(index);
+                
+                bubble.innerHTML = `
+                    <div class="applicant-name">${applicant.name || 'Anonymous'}</div>
+                    <div class="applicant-info">Interview: ${applicant.interview_date}</div>
+                    <div class="applicant-info">Exchanges: ${applicant.conversation_count}</div>
+                    <div class="applicant-score">Score: ${applicant.final_score || 'N/A'}/100</div>
+                `;
+                
+                grid.appendChild(bubble);
+            });
+        }
+
+        function showCharacteristics(index) {
+            const applicant = applicantsData[index];
+            const modal = document.getElementById('characteristics-modal');
+            const nameElement = document.getElementById('modal-candidate-name');
+            const infoElement = document.getElementById('modal-candidate-info');
+            const contentElement = document.getElementById('modal-characteristics-content');
+
+            nameElement.textContent = applicant.name || 'Anonymous Candidate';
+            infoElement.textContent = `Interview completed on ${applicant.interview_date} • ${applicant.conversation_count} exchanges`;
+
+            // Build characteristics content
+            let content = '';
+
+            // Technical Skills
+            if (applicant.technical_skills) {
+                content += `
+                    <div class="characteristics-section">
+                        <div class="section-title">Technical Skills</div>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <div class="skill-name">Quantitative Reasoning</div>
+                                <div class="skill-score">${applicant.technical_skills.quantitative_reasoning || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Programming</div>
+                                <div class="skill-score">${applicant.technical_skills.programming || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Market Knowledge</div>
+                                <div class="skill-score">${applicant.technical_skills.market_knowledge || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Data Analysis</div>
+                                <div class="skill-score">${applicant.technical_skills.data_analysis || 0}/100</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Behavioral Traits
+            if (applicant.behavioral_traits) {
+                content += `
+                    <div class="characteristics-section">
+                        <div class="section-title">Behavioral Traits</div>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <div class="skill-name">Problem Solving</div>
+                                <div class="skill-score">${applicant.behavioral_traits.problem_solving || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Teamwork</div>
+                                <div class="skill-score">${applicant.behavioral_traits.teamwork || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Initiative</div>
+                                <div class="skill-score">${applicant.behavioral_traits.initiative || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Resilience</div>
+                                <div class="skill-score">${applicant.behavioral_traits.resilience || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Adaptability</div>
+                                <div class="skill-score">${applicant.behavioral_traits.adaptability || 0}/100</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Cultural Fit
+            if (applicant.cultural_fit) {
+                content += `
+                    <div class="characteristics-section">
+                        <div class="section-title">Cultural Fit</div>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <div class="skill-name">Collaborative Thinking</div>
+                                <div class="skill-score">${applicant.cultural_fit.collaborative_thinking || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Continuous Learning</div>
+                                <div class="skill-score">${applicant.cultural_fit.continuous_learning || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Challenge Seeking</div>
+                                <div class="skill-score">${applicant.cultural_fit.challenge_seeking || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Entrepreneurial Spirit</div>
+                                <div class="skill-score">${applicant.cultural_fit.entrepreneurial_spirit || 0}/100</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Soft Skills
+            if (applicant.soft_skills) {
+                content += `
+                    <div class="characteristics-section">
+                        <div class="section-title">Soft Skills</div>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <div class="skill-name">Communication</div>
+                                <div class="skill-score">${applicant.soft_skills.communication || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Decision Making</div>
+                                <div class="skill-score">${applicant.soft_skills.decision_making || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Time Management</div>
+                                <div class="skill-score">${applicant.soft_skills.time_management || 0}/100</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-name">Leadership</div>
+                                <div class="skill-score">${applicant.soft_skills.leadership || 0}/100</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Insights
+            if (applicant.insights) {
+                if (applicant.insights.strengths && applicant.insights.strengths.length > 0) {
+                    content += `
+                        <div class="characteristics-section">
+                            <div class="section-title">Key Strengths</div>
+                            <ul class="insights-list">
+                                ${applicant.insights.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                if (applicant.insights.weaknesses && applicant.insights.weaknesses.length > 0) {
+                    content += `
+                        <div class="characteristics-section">
+                            <div class="section-title">Areas for Improvement</div>
+                            <ul class="insights-list">
+                                ${applicant.insights.weaknesses.map(weakness => `<li>${weakness}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                if (applicant.insights.recommendations && applicant.insights.recommendations.length > 0) {
+                    content += `
+                        <div class="characteristics-section">
+                            <div class="section-title">Recommendations</div>
+                            <ul class="insights-list">
+                                ${applicant.insights.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+            }
+
+            // AI Assessment Summary
+            if (applicant.ai_assessment) {
+                content += `
+                    <div class="characteristics-section">
+                        <div class="section-title">AI Assessment Summary</div>
+                        <div style="background: rgba(59, 130, 246, 0.1); border-radius: 10px; padding: 15px; white-space: pre-wrap; color: white;">${applicant.ai_assessment}</div>
+                    </div>
+                `;
+            }
+
+            contentElement.innerHTML = content;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('characteristics-modal');
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('characteristics-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
