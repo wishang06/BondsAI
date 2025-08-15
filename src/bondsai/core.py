@@ -96,6 +96,7 @@ class DatingAssistant:
         self.conversation_phase = "introduction"
         self.is_first_message = True
         self.ready_for_summary = False
+        self.profile_content = ""
         
         # Dating-specific conversation prompts
         self.system_prompt = """You are a charming, friendly, and genuinely curious AI designed to help people find meaningful connections through a dating app. Your role is to:
@@ -237,7 +238,7 @@ Full Conversation History:
             with open(filepath, 'w', encoding='utf-8') as f:
                 f.write(profile_content)
             
-            return filepath
+            return filepath, ai_profile
             
         except Exception as e:
             return f"Error saving profile: {str(e)}"
@@ -327,18 +328,20 @@ Full Conversation History:
                 # All basic info collected, end conversation immediately
                 self.ready_for_summary = True
                 # Save profile to file
-                filepath = await self.save_profile_to_file()
-                ending_message = f"Thank you so much for sharing with me! 💕 I've learned so much about you and created a personality profile. It's been saved to: {filepath}\n\nI hope this helps you find meaningful connections! 🌟"
+                filepath, profile_content = await self.save_profile_to_file()
+                ending_message = f"Thank you so much for sharing with me! 💕 I've learned so much about you and created a personality profile. It's been saved to: {filepath[0]}\n\nI hope this helps you find meaningful connections! 🌟"
                 self.add_message("assistant", ending_message)
+                self.profile_content = profile_content
                 return ending_message
         
         # Check if conversation has gone too long (15+ exchanges) and force end
         if self.profile.conversation_count >= 15 and not self.ready_for_summary:
             self.ready_for_summary = True
             # Save profile to file
-            filepath = await self.save_profile_to_file()
-            ending_message = f"Thank you so much for sharing with me! 💕 I've learned so much about you and created a personality profile. It's been saved to: {filepath}\n\nI hope this helps you find meaningful connections! 🌟"
+            filepath, profile_content = await self.save_profile_to_file()
+            ending_message = f"Thank you so much for sharing with me! 💕 I've learned so much about you and created a personality profile. It's been saved to: {filepath[0]}\n\nI hope this helps you find meaningful connections! 🌟"
             self.add_message("assistant", ending_message)
+            self.profile_content = profile_content
             return ending_message
         
         # Prepare messages for OpenAI API with system prompt

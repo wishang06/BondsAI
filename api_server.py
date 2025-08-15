@@ -42,13 +42,13 @@ def dating_chat():
         try:
             # Get AI response
             ai_response = loop.run_until_complete(dating_assistant.chat(user_message))
-            
             # Check if conversation is complete (ready for summary)
             is_complete = dating_assistant.ready_for_summary
             
             # If complete, generate profile summary
             profile_data = None
             if is_complete:
+
                 # Extract profile information from the conversation
                 profile_data = {
                     "name": dating_assistant.profile.name or "User",
@@ -56,7 +56,7 @@ def dating_chat():
                     "gender": dating_assistant.profile.gender or "Not specified",
                     "sexual_orientation": dating_assistant.profile.sexual_orientation or "Not specified",
                     "conversation_count": dating_assistant.profile.conversation_count,
-                    "personality_summary": "Profile generated based on conversation"
+                    "personality_summary": dating_assistant.profile_content
                 }
             
             response = {
