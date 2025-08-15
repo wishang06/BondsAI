@@ -60,64 +60,6 @@ body {
     overflow: hidden;
 }
 
-/* Dating Theme */
-.dating-theme {
-    background: linear-gradient(135deg, #ffeef8 0%, #f8e8f5 50%, #fdf2f8 100%);
-}
-
-.hearts-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.hearts-background::before,
-.hearts-background::after {
-    content: '💖';
-    position: absolute;
-    font-size: 2rem;
-    opacity: 0.1;
-    animation: float 6s ease-in-out infinite;
-}
-
-.hearts-background::before {
-    top: 20%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.hearts-background::after {
-    top: 60%;
-    right: 15%;
-    animation-delay: 3s;
-}
-
-/* Add more hearts with pseudo-elements */
-.dating-theme::before,
-.dating-theme::after {
-    content: '💕';
-    position: absolute;
-    font-size: 1.5rem;
-    opacity: 0.08;
-    animation: float 8s ease-in-out infinite;
-}
-
-.dating-theme::before {
-    top: 40%;
-    left: 80%;
-    animation-delay: 1s;
-}
-
-.dating-theme::after {
-    top: 80%;
-    left: 20%;
-    animation-delay: 4s;
-}
-
 /* Job Theme */
 .job-theme {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
@@ -172,7 +114,7 @@ body {
     border-color: #3b82f6;
 }
 
-.heart-icon, .briefcase-icon {
+.briefcase-icon {
     font-size: 1.5rem;
 }
 
@@ -209,11 +151,6 @@ body {
     animation: messageSlide 0.3s ease-out;
 }
 
-.message-bubble.pink {
-    background: linear-gradient(135deg, #f8bbd9 0%, #e91e63 100%);
-    color: white;
-    border-bottom-left-radius: 5px;
-}
 
 .message-bubble.blue {
     background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
@@ -258,16 +195,6 @@ body {
     transition: all 0.3s ease;
 }
 
-.pink-input {
-    background: #fce7f3;
-    border-color: #f9a8d4;
-}
-
-.pink-input:focus {
-    border-color: #e91e63;
-    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
-}
-
 .blue-input {
     background: #dbeafe;
     border-color: #93c5fd;
@@ -291,15 +218,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.pink-button {
-    background: linear-gradient(135deg, #f8bbd9 0%, #e91e63 100%);
-}
-
-.pink-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
 }
 
 .blue-button {
@@ -356,11 +274,6 @@ body {
     max-width: 400px;
     width: 90vw;
     animation: profileSlide 0.5s ease-out;
-}
-
-.pink-card {
-    border: 3px solid #e91e63;
-    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
 }
 
 .blue-card {

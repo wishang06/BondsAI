@@ -3,7 +3,6 @@
 
 import asyncio
 import sys
-from src.bondsai.core import DatingAssistant
 from src.bondsai.job_screening import JobScreeningAssistant
 
 
@@ -33,85 +32,6 @@ async def main():
             sys.exit(0)
         else:
             print("Invalid choice. Please enter 1, 2, or 3.")
-
-
-async def run_dating_app():
-    """Run the dating app."""
-    print("\n" + "=" * 60)
-    print("💕 Welcome to BondsAI - Your Personal AI Matchmaker!")
-    print("=" * 60)
-    
-    print("\n📋 Available Commands:")
-    print("• Just type your message to chat with your AI matchmaker")
-    print("• /help - Show this help message")
-    print("• /clear - Start a fresh conversation")
-    print("• /info - Show conversation info")
-    print("• /quit - Exit the application")
-    
-    print("\n💡 What to expect:")
-    print("• Your AI will ask you thoughtful questions to get to know you")
-    print("• Be yourself and share openly - this helps create better matches!")
-    print("• The conversation will feel natural and engaging")
-    print("• After 10-15 exchanges, you'll get a personality summary")
-    
-    assistant = DatingAssistant()
-    
-    # Start the conversation automatically
-    print("\n" + "-" * 60)
-    initial_response = await assistant.chat()
-    print("💕 AI Matchmaker:", initial_response)
-    print("-" * 60)
-    
-    while True:
-        try:
-            user_input = input("\nYou: ").strip()
-            
-            if user_input.lower() == "/quit":
-                print("\n💕 Thanks for chatting! Your personality profile is ready for matching!")
-                break
-            elif user_input.lower() == "/help":
-                print("\n📋 Available Commands:")
-                print("• Just type your message to chat with your AI matchmaker")
-                print("• /help - Show this help message")
-                print("• /clear - Start a fresh conversation")
-                print("• /info - Show conversation info")
-                print("• /quit - Exit the application")
-                continue
-            elif user_input.lower() == "/clear":
-                assistant.clear_history()
-                print("Conversation cleared! Starting fresh...")
-                # Start new conversation automatically
-                print("\n" + "-" * 60)
-                initial_response = await assistant.chat()
-                print("💕 AI Matchmaker:", initial_response)
-                print("-" * 60)
-                continue
-            elif user_input.lower() == "/info":
-                summary = assistant.get_conversation_summary()
-                print("\n" + "=" * 60)
-                print("🎭 Your Personality Profile")
-                print("=" * 60)
-                print(summary["personality_summary"])
-                print("=" * 60)
-                print("This profile helps us find your perfect match! 💕")
-                print("=" * 60)
-                continue
-            elif not user_input:
-                continue
-            
-            print("⠋ 💕 BondsAI is thinking about your response...")
-            response = await assistant.chat(user_input)
-            
-            print("-" * 60)
-            print("💕 AI Matchmaker:", response)
-            print("-" * 60)
-            
-        except KeyboardInterrupt:
-            print("\n\n💕 Thanks for chatting! Your personality profile is ready for matching!")
-            break
-        except Exception as e:
-            print(f"An error occurred: {e}")
-
 
 async def run_job_screening_app():
     """Run the job screening app."""

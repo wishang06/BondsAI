@@ -226,36 +226,19 @@ class BondsAI {
         
         let profileHTML = '';
         
-        if (type === 'dating') {
-            profileHTML = `
-                <div class="profile-section">
-                    <strong>Name:</strong> ${profileData.name}<br>
-                    <strong>Age:</strong> ${profileData.age}<br>
-                    <strong>Gender:</strong> ${profileData.gender}<br>
-                    <strong>Orientation:</strong> ${profileData.sexual_orientation}
-                </div>
-                <div class="profile-section">
-                    <strong>Conversation Summary:</strong><br>
-                    ${profileData.personality_summary}
-                </div>
-                <div class="profile-section">
-                    <strong>Messages Exchanged:</strong> ${profileData.conversation_count}
-                </div>
-            `;
-        } else {
-            profileHTML = `
-                <div class="profile-section">
-                    <strong>Candidate:</strong> ${profileData.name}
-                </div>
-                <div class="profile-section">
-                    <strong>Assessment Summary:</strong><br>
-                    ${profileData.assessment_summary}
-                </div>
-                <div class="profile-section">
-                    <strong>Interview Length:</strong> ${profileData.conversation_count} exchanges
-                </div>
-            `;
-        }
+        profileHTML = `
+            <div class="profile-section">
+                <strong>Candidate:</strong> ${profileData.name}
+            </div>
+            <div class="profile-section">
+                <strong>Assessment Summary:</strong><br>
+                ${profileData.assessment_summary}
+            </div>
+            <div class="profile-section">
+                <strong>Interview Length:</strong> ${profileData.conversation_count} exchanges
+            </div>
+        `;
+    
         
         profileContent.innerHTML = profileHTML;
         profileDisplay.style.display = 'block';
