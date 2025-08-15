@@ -54,6 +54,10 @@ body {
     text-decoration: none;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* Chat Sections */
 .chat-section {
     height: 100vh;
