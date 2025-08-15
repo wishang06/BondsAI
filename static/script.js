@@ -40,7 +40,7 @@ class BondsAI {
     setupScrollBehavior() {
         // Handle scroll events to determine current section
         window.addEventListener('scroll', () => {
-            const sections = ['dating-section', 'logo-section', 'job-section'];
+            const sections = ['logo-section', 'job-section'];
             const scrollPosition = window.scrollY;
             const windowHeight = window.innerHeight;
             
@@ -67,6 +67,7 @@ class BondsAI {
         
         // Optional: Add wheel event listener for more controlled scrolling
         let isScrolling = false;
+        let isRescrolling = false;
         
         window.addEventListener('wheel', (e) => {
             if (isScrolling) return;
@@ -74,26 +75,42 @@ class BondsAI {
             const delta = e.deltaY;
             const currentSection = document.querySelector(`#${this.currentSection}-section`);
             
-            if (Math.abs(delta) > 50) { // Threshold for intentional scroll
+            if (Math.abs(delta) > 10) { // Threshold for intentional scroll
                 isScrolling = true;
                 
-                if (delta > 0) { // Scrolling down
-                    if (this.currentSection === 'logo') {
-                        document.getElementById('job-section').scrollIntoView({ behavior: 'smooth' });
-                    } else if (this.currentSection === 'dating') {
-                        document.getElementById('logo-section').scrollIntoView({ behavior: 'smooth' });
-                    }
-                } else { // Scrolling up
-                    if (this.currentSection === 'logo') {
-                        document.getElementById('dating-section').scrollIntoView({ behavior: 'smooth' });
-                    } else if (this.currentSection === 'job') {
-                        document.getElementById('logo-section').scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
+                //scroll down to job-section, scroll up to logo-section
+                if (delta > 0)
+                    document.getElementById('job-section').scrollIntoView({ behavior: 'smooth' });
+                else
+                    document.getElementById('logo-section').scrollIntoView({ behavior: 'smooth' });
+    
                 
                 setTimeout(() => {
                     isScrolling = false;
                 }, 1000);
+            }
+            else {
+                const initialSection = this.currentSection;
+                if (!isRescrolling)
+                {
+                    isRescrolling = true;
+                    setTimeout(() => {
+                        if (isScrolling)
+                        {
+                            isRescrolling = false;
+                            return;
+                        }
+                        if (initialSection !== this.currentSection)
+                        {
+                            isRescrolling = false;
+                            return;
+                        }
+
+                        currentSection.scrollIntoView({ behavior: 'smooth' });
+                        isRescrolling = false;
+                    }, 100);
+                }
+                
             }
         }, { passive: true });
     }
@@ -143,7 +160,7 @@ class BondsAI {
             // Add AI response to UI
             this.addMessageToUI(type, response.message, 'ai');
             
-            // Check if conversation is complete and show profile
+            // Check if conversation is complete and show profile with a one second delay
             if (response.isComplete && response.profile) {
                 setTimeout(() => {
                     this.showProfile(type, response.profile);

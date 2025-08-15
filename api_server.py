@@ -24,6 +24,7 @@ CORS(app)  # Enable CORS for frontend integration
 job_assistant = JobScreeningAssistant()
 candidate_conversation_timer = DeltaTimeRecorder()
 
+#routing setup for static files
 @app.route('/')
 def index():
     return app.send_static_file("index.html")
@@ -48,15 +49,17 @@ def send_icon(filename):
 def recruiter():
     return app.send_static_file("recruiter.html")
 
+#routing for API endpoints
+
+#Health check endpoint to verify SERVER is running
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    """Health check endpoint."""
     return jsonify({"status": "healthy", "message": "BondsAI API is running"})
 
-
+#for job screening chat:
+# Takes in a candidate message from client and send AI response and candidate profile data to client
 @app.route('/api/job/chat', methods=['POST'])
 def job_chat():
-    """Handle job screening chat messages."""
     try:
         data = request.get_json()
         user_message = data.get('message', '').strip()
@@ -100,16 +103,16 @@ def job_chat():
         print(f"Error in job chat: {str(e)}")
         return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
+# Endpoint to reset job screening conversation
 @app.route('/api/job/reset', methods=['POST'])
 def reset_job():
-    """Reset job screening conversation."""
     global job_assistant
     job_assistant.clear_history()
     return jsonify({"message": "Job screening conversation reset"})
 
+#Get the initial job screening message
 @app.route('/api/job/start', methods=['GET'])
 def start_job():
-    """Get the initial job screening message."""
     candidate_conversation_timer.update()
     try:
         loop = asyncio.new_event_loop()
@@ -135,8 +138,8 @@ def start_job():
         print(f"Error starting job chat: {str(e)}")
         return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
+# Parse an assessment file and extract candidate data
 def parse_assessment_file(filepath):
-    """Parse an assessment file and extract candidate data."""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
@@ -275,8 +278,8 @@ def parse_assessment_file(filepath):
         print(f"Error parsing assessment file {filepath}: {str(e)}")
         return None
 
+# Extract a score for a specific skill from text.
 def extract_score(text, skill_keyword):
-    """Extract a score for a specific skill from text."""
     # Look for patterns like "Programming: 85" or "Programming Skills: 85/100"
     pattern = rf'{skill_keyword}[^:]*:\s*(\d+)'
     match = re.search(pattern, text, re.IGNORECASE)
@@ -291,8 +294,8 @@ def extract_score(text, skill_keyword):
     
     return 0
 
+# Extract list items from text (bullet points, numbered lists, etc.).
 def extract_list_items(text):
-    """Extract list items from text (bullet points, numbered lists, etc.)."""
     items = []
     
     # Split by lines and look for list patterns
@@ -311,9 +314,9 @@ def extract_list_items(text):
     
     return items[:5]  # Limit to 5 items
 
+# Get all job applicants and their assessment data
 @app.route('/api/recruiter/applicants', methods=['GET'])
 def get_applicants():
-    """Get all job applicants and their assessment data."""
     try:
         assessments_dir = "assessments"
         applicants = []
