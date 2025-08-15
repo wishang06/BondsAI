@@ -6,7 +6,7 @@ class BondsAI {
         this.isTyping = false;
         
         // API endpoints
-        this.API_BASE = 'http://localhost:8000';
+        this.API_BASE = window.location.origin;
         
         this.init();
     }
