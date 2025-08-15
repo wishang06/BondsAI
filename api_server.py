@@ -36,6 +36,10 @@ def script():
 def favicon():
     return app.send_static_file("favicon.ico")
 
+@app.route('/image/<path:filename>')
+def send_icon(filename):
+    return app.send_static_file("image/" + filename)
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     """Health check endpoint."""
