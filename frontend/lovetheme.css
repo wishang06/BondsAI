@@ -1,0 +1,436 @@
+@font-face {
+    font-family: 'Instrument Sans';
+    src: url(Fonts/Instrument_Sans/InstrumentSans-VariableFont_wdth\,wght.ttf);
+}
+
+.lovetheme.bottom_gradient
+{
+    position: absolute;
+    width: 1920px;
+    height: 251px;
+    left: 0px;
+    top: 829px;
+
+    background: linear-gradient(180deg, rgba(217, 217, 217, 0) 0%, #737373 100%);
+}
+
+.lovetheme.chatbox.respond
+{
+    position: absolute;
+    width: 400px;
+    height: 80px;
+    left: 512px;
+    top: 692px;
+
+    background: #B1B1B1;
+    box-shadow: 3px 5px 5.3px rgba(0, 0, 0, 0.33);
+    border-radius: 20px 20px 20px 0px;
+
+    /* hi */
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 39px;
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;   /* Centers vertically */
+
+    color: #000000;
+
+
+}
+
+.lovetheme.chatbox.user
+{
+    position: absolute;
+    width: 312px;
+    height: 81px;
+    left: 1083px;
+    top: 459px;
+
+    background: #FF9EBA;
+    box-shadow: 3px 5px 5.3px rgba(0, 0, 0, 0.33);
+    border-radius: 20px 20px 0px 20px;
+
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 39px;
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;   /* Centers vertically */
+      
+
+    color: #7D1313;
+}
+
+
+.lovetheme.text.placeholder
+{
+    position: absolute;
+    width: 275px;
+    height: 31px;
+    left: 656px;
+    top: 956px;
+
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    /* identical to box height */
+
+    color: #727272;
+}
+
+.lovetheme.box.url
+{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 670px;
+    height: 60px;
+    left: 622px;
+    top: 45px;
+
+    background: rgba(255, 255, 255, 0.17);
+    border: 3px solid #FF91B0;
+    box-shadow: 0px 30px 22.9px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8.9px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 30px;
+
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 0px;
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;   /* Centers vertically */
+
+    color: #E20967;
+}
+
+.lovetheme.box.input
+{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 675px;
+    height: 60px;
+    left: 622px;
+    top: 942px;
+
+    background: rgba(255, 255, 255, 0.56);
+    border: 3px solid #FF0561;
+    box-shadow: 0px 30px 22.9px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(7.6px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 30px;
+
+    /* Type to say something... */
+
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    padding-left: 20px;
+    /* identical to box height */
+
+    color: #727272;
+}
+
+.lovetheme.button.send
+{
+    /* Rectangle 3 */
+
+    position: absolute;
+    width: 49px;
+    height: 45px;
+    left: 1239px;
+    top: 949px;
+
+    background: #FF0561;
+    border-radius: 22.5px;
+
+}
+
+.lovetheme.icon.send
+{
+    /* Vector 12 */
+
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    left: 1253px;
+    top: 960px;
+}
+
+.lovetheme.background.heart1
+{
+    /* Vector 6 */
+
+    position: absolute;
+    width: 418px;
+    height: 398px;
+    left: 1015px;
+    top: 897px;
+
+}
+
+.lovetheme.background.heart2
+{
+    /* Vector 8 */
+
+    position: absolute;
+    width: 218px;
+    height: 181px;
+    left: 1046px;
+    top: 511px;
+}
+
+.lovetheme.background.heart3
+{
+    /* Vector 9 */
+
+    position: absolute;
+    width: 142px;
+    height: 130px;
+    left: 723px;
+    top: 297px;
+}
+
+.lovetheme.background.heart4
+{
+    /* Vector 7 */
+
+    position: absolute;
+    width: 284px;
+    height: 252px;
+    left: 570px;
+    top: 629px;
+}
+
+.lovetheme.background.heart5
+{
+    /* Vector 10 */
+
+    position: absolute;
+    width: 77px;
+    height: 69px;
+    left: 1078px;
+    top: 273px;
+
+}
+
+.lovetheme.background.heart6
+{
+    /* Vector 11 */
+
+    position: absolute;
+    width: 66px;
+    height: 59px;
+    left: 891px;
+    top: 127px;
+
+}
+
+.lovetheme.box.profile.base
+{
+    /* Rectangle 12 */
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 675px;
+    height: 472px;
+    left: 622px;
+    top: 275px;
+
+    background: rgba(255, 255, 255, 0.56);
+    border: 3px solid #FF0561;
+    box-shadow: 0px 30px 22.9px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(7.6px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 30px;
+}
+
+.lovetheme.box.profile.top
+{
+    /* Rectangle 16 */
+
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 542px;
+    height: 57px;
+    left: 687px;
+    top: 319px;
+
+    background: rgba(255, 255, 255, 0.56);
+    border: 3px solid #FF0561;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(2px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 30px;
+
+
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 35px;
+    line-height: 43px;
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;   /* Centers vertically */
+
+    color: #727272;
+}
+
+.lovetheme.box.profile.content
+{
+    /* Rectangle 14 */
+
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 542px;
+    height: 271px;
+    left: 687px;
+    top: 413px;
+
+    background: rgba(255, 255, 255, 0.56);
+    border: 3px solid #FF0561;
+    box-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(17.45px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 30px;
+
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 34px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #727272;
+}
+
+.lovetheme.button.match
+{
+    /* Rectangle 13 */
+
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 169px;
+    height: 45px;
+    left: 875px;
+    top: 721px;
+
+    background: #FF0561;
+    border: 3px solid #FF0561;
+    box-shadow: 0px 14px 10.9px rgba(0, 0, 0, 0.25);
+    border-radius: 22.5px;
+
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 39px;
+    /* identical to box height */
+    text-align: center;
+
+    color: #FFFFFF;
+}
+
+.lovetheme.box.loading_bar
+{
+    /* Rectangle 17 */
+
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 542px;
+    height: 60px;
+    left: 687px;
+    top: 715px;
+
+    background: rgba(255, 255, 255, 0.56);
+    border: 3px solid #FF0561;
+    backdrop-filter: blur(8.2px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 25px;
+}
+
+.lovetheme.line.loading_bar.back
+{
+    /* Line 2 */
+
+    position: absolute;
+    width: 480px;
+    height: 0px;
+    left: 723px;
+    top: 761px;
+
+    border: 2px solid #000000;
+    border-radius: 2px;
+
+}
+
+.lovetheme.line.loading_bar.load
+{
+    /* Line 3 */
+
+    position: absolute;
+    width: 347px;
+    height: 0px;
+    left: 717px;
+    top: 756px;
+
+    border: 6.5px solid #FF0561;
+    border-radius: 6.5px;
+    
+}
+
+.lovetheme.icon.loading_bar
+{
+    /* Vector 13 */
+
+    position: absolute;
+    width: 26px;
+    height: 22px;
+    left: 1046px;
+    top: 725px;
+
+}
+
+.lovetheme.button.heart
+{
+    /* Vector 13 */
+    position: absolute;
+    width: 142px;
+    height: 130px;
+    left: 880px;
+    top: 449px;
+
+}
+
+.lovetheme.line.link
+{
+    /* Line 4 */
+
+    position: absolute;
+    width: 241.01px;
+    height: 0px;
+    left: 831px;
+    top: 515px;
+
+    border: 5px dashed #FA1671;
+    border-radius: 5px;
+}
