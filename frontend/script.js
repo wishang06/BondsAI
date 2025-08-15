@@ -99,14 +99,6 @@ class BondsAI {
     }
 
     setupChatHandlers() {
-        // Dating chat handlers
-        const datingInput = document.getElementById('dating-input');
-        const datingSend = document.getElementById('dating-send');
-        
-        datingSend.addEventListener('click', () => {
-            this.sendMessage('dating', datingInput.value);
-        });
-
         // Job chat handlers
         const jobInput = document.getElementById('job-input');
         const jobSend = document.getElementById('job-send');
@@ -117,13 +109,6 @@ class BondsAI {
     }
 
     setupKeyboardHandlers() {
-        // Enter key handlers
-        document.getElementById('dating-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                this.sendMessage('dating', e.target.value);
-            }
-        });
 
         document.getElementById('job-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
