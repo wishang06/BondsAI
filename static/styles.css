@@ -135,7 +135,7 @@ a {
 /* Chat Container */
 .chat-container {
     width: 90%;
-    max-width: 600px;
+    max-width:1200px;
     height: 80vh;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
