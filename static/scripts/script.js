@@ -249,8 +249,7 @@ class BondsAI {
                 <strong>Candidate:</strong> ${profileData.name}
             </div>
             <div class="profile-section">
-                <strong>Assessment Summary:</strong><br>
-                ${profileData.assessment_summary}
+                <strong>Your assessment results have been recorded. Thank you for your time.</strong><br>
             </div>
             <div class="profile-section">
                 <strong>Interview Length:</strong> ${profileData.conversation_count} exchanges
