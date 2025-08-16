@@ -334,7 +334,7 @@ def get_applicants():
             return jsonify({"applicants": []})
         
         # Get all assessment files
-        assessment_files = glob.glob(os.path.join(assessments_dir, "*_assessment_*.md"))
+        assessment_files = glob.glob(os.path.join(assessments_dir, "*_assessment_*.txt"))
         
         for filepath in assessment_files:
             candidate_data = parse_assessment_file(filepath)
@@ -342,7 +342,7 @@ def get_applicants():
                 applicants.append(candidate_data)
         
         # Sort by interview date (most recent first)
-        applicants.sort(key=lambda x: x.get('final_score', '0'), reverse=True)
+        applicants.sort(key=lambda x: x.get('final_score', 0), reverse=True)
         
         return jsonify({"applicants": applicants})
         
