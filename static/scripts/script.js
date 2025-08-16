@@ -259,15 +259,12 @@ class BondsAI {
         
         profileContent.innerHTML = profileHTML;
         profileDisplay.style.display = 'block';
-        
-        // Add click handler to close profile
-        const closeHandler = (e) => {
-            if (e.target === profileDisplay) {
-                profileDisplay.style.display = 'none';
-                profileDisplay.removeEventListener('click', closeHandler);
-            }
-        };
-        profileDisplay.addEventListener('click', closeHandler);
+
+        const closeButton = document.getElementById('apply-button')
+        function handleClick() {
+            profileDisplay.style.display = 'none';
+        }
+        closeButton.addEventListener('click', handleClick); 
     }
 
     // Utility method to reset conversations
