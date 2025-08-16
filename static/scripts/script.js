@@ -151,7 +151,8 @@ class BondsAI {
             this.addMessageToUI(type, response.message, 'ai');
             
             // Check if conversation is complete and show profile with a one second delay
-            if (response.isComplete && response.profile) {
+            if (response.isComplete && response.profile && !this.isComplete) {
+                this.isComplete = true;
                 setTimeout(() => {
                     this.showProfile(type, response.profile);
                 }, 1000);
@@ -255,7 +256,7 @@ class BondsAI {
             profileDisplay.classList.add('exit');
             setTimeout(() => {
                 profileDisplay.style.display = 'none';
-            }, 500);
+            }, 600);
         }); 
     }
 
@@ -278,6 +279,8 @@ class BondsAI {
                     this.addMessageToUI('job', data.message, 'ai');
                 }
             }
+
+            this.isComplete = false;
         } catch (error) {
             console.error('Error resetting conversation:', error);
         }
