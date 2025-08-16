@@ -24,11 +24,7 @@ class BondsAI {
     clearMessages(type) {
         const messagesContainer = document.getElementById(`${type}-messages`);
         messagesContainer.innerHTML = '';
-        if (type === 'dating') {
-            this.datingMessages = [];
-        } else {
-            this.jobMessages = [];
-        }
+        this.jobMessages = [];
     }
 
     setupScrollBehavior() {
@@ -294,6 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add reset buttons for development (optional)
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        console.log('Development mode: Use bondsAI.resetConversation("dating") or bondsAI.resetConversation("job") to reset conversations');
+        console.log('bondsAI.resetConversation("job") to reset conversations');
     }
 });
