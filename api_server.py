@@ -33,10 +33,6 @@ def index():
 def styles():
     return app.send_static_file("styles.css")
 
-@app.route('/favicon.ico')
-def favicon():
-    return app.send_static_file("favicon.ico")
-
 @app.route('/scripts/<path:filename>')
 def send_script(filename):
     return app.send_static_file("scripts/" + filename)
