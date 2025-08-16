@@ -10,6 +10,7 @@ import sys
 import os
 import glob
 from datetime import datetime
+import random
 
 # Add the src directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
@@ -162,13 +163,20 @@ def parse_assessment_file(filepath):
         count_match = re.search(r'Interview Length: (\d+) exchanges', content)
         if count_match:
             conversation_count = int(count_match.group(1))
+
+        final_score = 0
+        final_score_match = re.search(r'Final Score: (\d+)/100', content.replace('**', ''))
+        if final_score_match:
+            final_score = int(final_score_match.group(1))
+
+        print(f'final score: {final_score}')
         
         # Initialize default scores
         candidate_data = {
             "name": candidate_name,
             "interview_date": interview_date,
             "conversation_count": conversation_count,
-            "final_score": None,
+            "final_score": final_score,
             "technical_skills": {
                 "quantitative_reasoning": 0,
                 "programming": 0,
