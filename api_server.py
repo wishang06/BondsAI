@@ -342,7 +342,7 @@ def get_applicants():
                 applicants.append(candidate_data)
         
         # Sort by interview date (most recent first)
-        applicants.sort(key=lambda x: x.get('interview_date', ''), reverse=True)
+        applicants.sort(key=lambda x: x.get('final_score', '0'), reverse=True)
         
         return jsonify({"applicants": applicants})
         
