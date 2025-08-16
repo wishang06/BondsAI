@@ -1,49 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BondsAI - Recruiter Dashboard</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="stylesheet" href="/styles/styles.css">
-    <link rel="stylesheet" href="/styles/recruiterstyles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link rel="stylesheet" href="/styles/recruiterstyles.css" />
+  </head>
+  <body>
     <div class="recruiter-container">
-        <div class="header">
-            <h1>🏢 Recruiter Dashboard</h1>
-            <p>Review candidate assessments and characteristics</p>
-        </div>
+      <div class="header">
+        <h1>🏢 Recruiter Dashboard</h1>
+        <p>Review candidate assessments and characteristics</p>
+      </div>
 
-        <div id="loading" class="loading-spinner">
-            <div class="spinner"></div>
-            <p>Loading applicant data...</p>
-        </div>
+      <div id="loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading applicant data...</p>
+      </div>
 
-        <div id="applicants-container" style="display: none;">
-            <div class="applicants-grid" id="applicants-grid">
-                <!-- Applicant bubbles will be populated here -->
-            </div>
+      <div id="applicants-container" style="display: none">
+        <div class="applicants-grid" id="applicants-grid">
+          <!-- Applicant bubbles will be populated here -->
         </div>
+      </div>
 
-        <div id="no-applicants" class="no-applicants" style="display: none;">
-            <h3>No Applicants Yet</h3>
-            <p>No job interviews have been completed yet. Applicants will appear here after they complete their AI interviews.</p>
-            <button class="refresh-button" onclick="loadApplicants()">Refresh</button>
-        </div>
+      <div id="no-applicants" class="no-applicants" style="display: none">
+        <h3>No Applicants Yet</h3>
+        <p>
+          No job interviews have been completed yet. Applicants will appear here
+          after they complete their AI interviews.
+        </p>
+        <button class="refresh-button" onclick="loadApplicants()">
+          Refresh
+        </button>
+      </div>
     </div>
 
     <!-- Characteristics Modal -->
     <div id="characteristics-modal" class="characteristics-modal">
-        <div class="modal-content">
-            <button class="close-button" onclick="closeModal()">&times;</button>
-            <div class="modal-header">
-                <h2 id="modal-candidate-name">Candidate Name</h2>
-                <p id="modal-candidate-info">Interview completed</p>
-            </div>
-            <div id="modal-characteristics-content"></div>
+      <div class="modal-content">
+        <button class="close-button" onclick="closeModal()">&times;</button>
+        <div class="modal-header">
+          <h2 id="modal-candidate-name">Candidate Name</h2>
+          <p id="modal-candidate-info">Interview completed</p>
         </div>
+        <div id="modal-characteristics-content"></div>
+      </div>
     </div>
-    <script src="recruiterscript.js"></script>
-</body>
+    <script src="scripts/recruiterscript.js"></script>
+  </body>
 </html>
