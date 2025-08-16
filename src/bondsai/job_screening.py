@@ -298,13 +298,6 @@ Examples: "John Smith", "Sarah Johnson", "Unknown" """
     async def chat(self, user_input: str = None) -> str:
         """Send a message to the AI and get a response."""
         
-        # If this is the first message, initiate the conversation
-        '''if self.is_first_message:
-            self.is_first_message = False
-            initial_message = "Hello! I'm conducting interviews for our Quantitative Trading program. Could you tell me a bit about yourself and your background?"
-            self.add_message("assistant", initial_message)
-            return initial_message'''
-        
         # Add user message to history
         if user_input:
             self.add_message("user", user_input)
