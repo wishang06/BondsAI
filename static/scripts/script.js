@@ -15,17 +15,10 @@ class BondsAI {
         this.setupScrollBehavior();
         this.setupChatHandlers();
         this.setupKeyboardHandlers();
-        this.loadInitialMessages();
         this.resetConversation();
         
         // Set initial scroll position to logo section
         document.getElementById('logo-section').scrollIntoView();
-    }
-
-    loadInitialMessages() {
-        // Use static initial messages - don't make API calls on page load
-        // The initial messages are already in the HTML, so we don't need to add them here
-        // This prevents automatic responses before user interaction
     }
 
     clearMessages(type) {
