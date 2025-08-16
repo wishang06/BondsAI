@@ -41,13 +41,17 @@ def script():
 def favicon():
     return app.send_static_file("favicon.ico")
 
-@app.route('/image/<path:filename>')
-def send_icon(filename):
-    return app.send_static_file("image/" + filename)
+@app.route('/styles/<path:filename>')
+def send_styles(filename):
+    return app.send_static_file("styles/" + filename)
 
 @app.route('/recruiter')
 def recruiter():
     return app.send_static_file("recruiter.html")
+
+@app.route('/image/<path:filename>')
+def send_icon(filename):
+    return app.send_static_file("image/" + filename)
 
 #routing for API endpoints
 

@@ -22,7 +22,6 @@ async def main():
         choice = input("\nEnter your choice (1-3): ").strip()
         
         if choice == "1":
-            await run_dating_app()
             break
         elif choice == "2":
             await run_job_screening_app()
