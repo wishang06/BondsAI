@@ -219,7 +219,7 @@ function showCharacteristics(index) {
         content += `
             <div class="characteristics-section">
                 <div class="section-title">AI Assessment Summary</div>
-                <div style="background: rgba(59, 130, 246, 0.1); border-radius: 10px; padding: 15px; white-space: pre-wrap; color: white;">${applicant.ai_assessment}</div>
+                <div style="background: rgba(59, 130, 246, 0.1); border-radius: 10px; padding: 15px; white-space: pre-wrap; color: rgb(197, 228, 255);">${applicant.ai_assessment}</div>
             </div>
         `;
     }

@@ -17,6 +17,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 from bondsai.job_screening import JobScreeningAssistant
 from server.DeltaTimeRecorder import DeltaTimeRecorder
+from server.AIAssessmentCompiler import compile_AI_assessment
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend integration
@@ -216,7 +217,7 @@ def parse_assessment_file(filepath):
         
         if assessment_start != -1 and transcript_start != -1:
             ai_assessment = content[assessment_start:transcript_start].strip()
-            candidate_data["ai_assessment"] = ai_assessment
+            candidate_data["ai_assessment"] = compile_AI_assessment(ai_assessment)
             
             # Try to extract scores using regex patterns
             # Look for patterns like "Technical Skills Assessment (0-100 for each):"

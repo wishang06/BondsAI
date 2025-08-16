@@ -1,3 +1,8 @@
+p {
+    font-family: 'Arial', sans-serif;
+    color: rgb(197, 228, 255);
+}
+
 .recruiter-container {
     margin: 0 auto;
     padding: 20px;
@@ -195,6 +200,7 @@
 
 .insights-list {
     list-style: none;
+    color: rgb(197, 228, 255);
     padding: 0;
 }
 
