@@ -165,7 +165,7 @@ def parse_assessment_file(filepath):
             conversation_count = int(count_match.group(1))
 
         final_score = 0
-        final_score_match = re.search(r'Final Score: (\d+)/100', content.replace('**', ''))
+        final_score_match = re.search(r'Final Score: (\d+)', content.replace('**', ''))
         if final_score_match:
             final_score = int(final_score_match.group(1))
 
