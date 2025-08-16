@@ -37,6 +37,10 @@ def styles():
 def script():
     return app.send_static_file("script.js")
 
+@app.route('/recruiterscript.js')
+def recruiterscript():
+    return app.send_static_file("recruiterscript.js")
+
 @app.route('/favicon.ico')
 def favicon():
     return app.send_static_file("favicon.ico")
