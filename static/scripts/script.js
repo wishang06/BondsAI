@@ -250,10 +250,13 @@ class BondsAI {
         profileDisplay.style.display = 'block';
 
         const closeButton = document.getElementById('apply-button')
-        function handleClick() {
-            profileDisplay.style.display = 'none';
-        }
-        closeButton.addEventListener('click', handleClick); 
+
+        closeButton.addEventListener('click', () => {
+            profileDisplay.classList.add('exit');
+            setTimeout(() => {
+                profileDisplay.style.display = 'none';
+            }, 500);
+        }); 
     }
 
     // Utility method to reset conversations

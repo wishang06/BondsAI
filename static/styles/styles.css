@@ -285,6 +285,10 @@ a {
     animation: displaySlide 0.5s ease-out;
 }
 
+.profile-display.exit {
+    animation: displayExit 0.5s ease-out forwards;
+}
+
 .profile-card {
     background: white;
     border-radius: 20px;
@@ -368,8 +372,13 @@ a {
 }
 
 @keyframes displaySlide {
-    from {top: 60%;}
+    from {top: 40%;}
     to {top: 50%;}
+}
+
+@keyframes displayExit {
+    from {top: 50%; opacity: 1;}
+    to {top: 60%; opacity: 0;}
 }
 
 @keyframes typing {
