@@ -31,10 +31,6 @@ candidate_conversation_timer = DeltaTimeRecorder()
 def index():
     return app.send_static_file("index.html")
 
-@app.route('/styles.css')
-def styles():
-    return app.send_static_file("styles.css")
-
 @app.route('/scripts/<path:filename>')
 def send_script(filename):
     return app.send_static_file("scripts/" + filename)
