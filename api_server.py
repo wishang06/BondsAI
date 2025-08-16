@@ -334,7 +334,7 @@ def get_applicants():
             return jsonify({"applicants": []})
         
         # Get all assessment files
-        assessment_files = glob.glob(os.path.join(assessments_dir, "*_assessment_*.txt"))
+        assessment_files = glob.glob(os.path.join(assessments_dir, "*_assessment_*.md"))
         
         for filepath in assessment_files:
             candidate_data = parse_assessment_file(filepath)
