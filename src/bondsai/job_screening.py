@@ -217,10 +217,6 @@ Please provide a comprehensive assessment including:
 
 Format the response clearly with sections and scores, in the following example format:
 
-QUANTITATIVE TRADING CANDIDATE ASSESSMENT
-Generated on: (date)
-Interview Length: (number of exchanges)
-
 ### Candidate Assessment for Quantitative Trading Position
 
 #### 1. Technical Skills Assessment
@@ -280,18 +276,6 @@ Interview Length: (number of exchanges)
 
 (Final comment)
 
----
-Full Interview Transcript:
-
-1. USER: (user message)
-
-2. ASSISTANT: (assistant message)
-
-3. USER: (user message)
-
-4. ASSISTANT: (assistant message)
-
-etc...
 """
 
             response = await self.client.chat.completions.create(
