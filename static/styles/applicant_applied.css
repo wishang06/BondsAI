@@ -40,7 +40,7 @@ body {
 .confirmation-icon {
     font-size: 5rem;
     color: #22c55e;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     animation: confirmationIconPulse 1s ease-out;
     width: 80px;
     height: 80px;
