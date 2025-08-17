@@ -223,7 +223,7 @@ Format the response clearly with sections and scores, in the following example f
 - **Quantitative Reasoning**: (score)
   - (insight)
 - **Programming Skills**: (score)
-  - Proficient in Python, with experience in libraries like Pandas, NumPy, and scikit-learn, and real-time simulation APIs.
+  - (insight)
 - **Market Knowledge**: (score)
   - (insight)
 - **Data Analysis**: (score)
@@ -265,9 +265,7 @@ Format the response clearly with sections and scores, in the following example f
 - **Final Score**: (score)
 - **Key Strengths**:
   - (insight)
-  - (insight)
 - **Areas for Improvement**:
-  - (insight)
   - (insight)
 - **Cultural Alignment**:
   - (insight)
