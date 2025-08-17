@@ -1,22 +1,16 @@
 """Flask API server for BondsAI frontend integration."""
 
 import asyncio
-import json
-import re
-from datetime import datetime
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import sys
 import os
 import glob
-from datetime import datetime
-import random
 from server.AssessmentFileLoader import parse_assessment_file
+from server.ApplicantManager import ApplicantManager
 
 # Add the src directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
-
-from server.ApplicantManager import ApplicantManager
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend integration

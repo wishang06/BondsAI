@@ -38,8 +38,6 @@ def parse_assessment_file(filepath):
         final_score_match = re.search(r'Final Score: (\d+)', content.replace('**', ''))
         if final_score_match:
             final_score = int(final_score_match.group(1))
-
-        print(f'final score: {final_score}')
         
         # Initialize default scores
         candidate_data = {
