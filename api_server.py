@@ -16,7 +16,6 @@ from server.AssessmentFileLoader import parse_assessment_file
 # Add the src directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
-from server.DeltaTimeRecorder import DeltaTimeRecorder
 from server.ApplicantManager import ApplicantManager
 
 app = Flask(__name__)
@@ -60,9 +59,15 @@ def applicant_chat():
             # If complete, generate assessment summary
             profile_data = None
             if is_complete:
+                applicant_manager.stop_conversation_timer(request.remote_addr)
+                conversation_duration = applicant_manager.get_conversation_duration(request.remote_addr).total_seconds()
+                conversation_hours = int(conversation_duration // 3600)
+                conversation_minutes = int((conversation_duration % 3600) // 60)
+                conversation_seconds = int(conversation_duration % 60)
                 profile_data = {
                     "name": applicant_job_assistant.candidate.name or "Candidate",
                     "conversation_count": applicant_job_assistant.candidate.conversation_count,
+                    "conversation_duration": f"{conversation_hours}h {conversation_minutes}m {conversation_seconds}s",
                     "assessment_summary": "Assessment completed based on interview"
                 }
             

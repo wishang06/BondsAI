@@ -1,4 +1,5 @@
 from bondsai.job_screening import JobScreeningAssistant
+from server.DeltaTimeRecorder import DeltaTimeRecorder
 
 # This class manages applicant by their ip address to ensure they can only apply once
 # Each applicant is represented by their ip, which they can have three states: 'applied' 'not applied' or 'applying'
@@ -8,6 +9,7 @@ class ApplicantManager:
     def __init__(self):
         self.applicant_state = {}
         self.applicant_job_assistant = {}
+        self.applicant_timer = {}
     
     # Return the status of the applicant based on their IP address
     def get_applicant_status(self, ip_address):
@@ -27,6 +29,7 @@ class ApplicantManager:
         
         self.set_applicant_status(ip_address, 'applying')
         self.applicant_job_assistant[ip_address] = JobScreeningAssistant()
+        self.applicant_timer[ip_address] = DeltaTimeRecorder()
 
     # End the conversation for the applicant by removing their JobScreeningAssistant instance
     def end_conversation(self, ip_address):
@@ -36,6 +39,7 @@ class ApplicantManager:
         
         self.set_applicant_status(ip_address, 'applied')
         del self.applicant_job_assistant[ip_address]
+        del self.applicant_timer[ip_address]
 
     # Get the JobScreeningAssistant instance for the applicant
     def get_job_assistant(self, ip_address):
@@ -43,5 +47,19 @@ class ApplicantManager:
             raise ValueError(f"Applicant {ip_address} is not currently applying.") 
         
         return self.applicant_job_assistant[ip_address]
+    
+    # Get the conversation duration for the applicant in datetime format, 0 for unfinished conversations and -1 for finished conversations
+    def get_conversation_duration(self, ip_address):
+        if self.get_applicant_status(ip_address) != 'applying':
+            return -1
+        
+        return self.applicant_timer[ip_address].get_delta()
+    
+    # Stop conversation timer for the applicant
+    def stop_conversation_timer(self, ip_address):
+        if self.get_applicant_status(ip_address) != 'applying':
+            return
+        
+        self.applicant_timer[ip_address].update()
         
 

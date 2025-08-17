@@ -241,7 +241,7 @@ class BondsAI {
                 <strong>Your assessment results have been recorded. Thank you for your time.</strong><br>
             </div>
             <div class="profile-section">
-                <strong>Interview Length:</strong> ${profileData.conversation_count} exchanges
+                <strong>Interview Duration:</strong> ${profileData.conversation_duration}
             </div>
         `;
     
