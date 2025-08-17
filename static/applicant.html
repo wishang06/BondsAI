@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BondsAI - Job Assistant</title>
+    <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico" />
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+  <body>
+    <!-- Logo Section (center) -->
+    <a href="#job-section">
+      <section id="logo-section" class="logo-section">
+        <div class="logo-container">
+          <div class="logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 100 100" width="120" height="120">
+                <!-- Heart shape with circuit pattern -->
+                <path
+                  d="M50,85 C50,85 20,60 20,40 C20,25 30,15 45,15 C47,15 50,20 50,20 C50,20 53,15 55,15 C70,15 80,25 80,40 C80,60 50,85 50,85 Z"
+                  fill="#333"
+                  stroke="#333"
+                  stroke-width="2"
+                />
+                <!-- Circuit pattern inside heart -->
+                <circle cx="35" cy="35" r="3" fill="white" />
+                <circle cx="50" cy="30" r="3" fill="white" />
+                <circle cx="65" cy="35" r="3" fill="white" />
+                <line
+                  x1="35"
+                  y1="35"
+                  x2="50"
+                  y2="30"
+                  stroke="white"
+                  stroke-width="2"
+                />
+                <line
+                  x1="50"
+                  y1="30"
+                  x2="65"
+                  y2="35"
+                  stroke="white"
+                  stroke-width="2"
+                />
+                <line
+                  x1="50"
+                  y1="30"
+                  x2="50"
+                  y2="45"
+                  stroke="white"
+                  stroke-width="2"
+                />
+                <circle cx="50" cy="45" r="3" fill="white" />
+              </svg>
+            </div>
+            <h1 class="logo-text">BondsAI</h1>
+          </div>
+          <p class="scroll-instruction">click anywhere to start</p>
+        </div>
+      </section>
+    </a>
+
+    <!-- Job Section (scroll down from logo) -->
+    <section id="job-section" class="chat-section job-theme">
+      <div class="chat-container">
+        <div class="header">
+          <div class="logo-small">BondsAI.com</div>
+          <div class="briefcase-icon">💼</div>
+        </div>
+        <div class="chat-messages" id="job-messages">
+          <div class="message ai-message">
+            <div class="message-bubble blue">
+              Hello! I'm conducting interviews for our Quantitative Trading
+              program. Could you tell me your name, a bit about yourself and
+              your background?
+            </div>
+          </div>
+        </div>
+        <div class="input-container">
+          <input
+            type="text"
+            id="job-input"
+            placeholder="Type to say something..."
+            class="chat-input blue-input"
+          />
+          <button id="job-send" class="send-button blue-button">➤</button>
+        </div>
+        <div class="typing-indicator" id="job-typing" style="display: none">
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+      <div class="profile-display" id="job-profile" style="display: none">
+        <div class="profile-card blue-card">
+          <div class="profile-header">Your Interview is Complete!</div>
+          <div class="profile-content" id="job-profile-content"></div>
+          <button id="apply-button" class="apply-button">Finish</button>
+        </div>
+      </div>
+    </section>
+    <script src="scripts/script.js"></script>
+  </body>
+</html>

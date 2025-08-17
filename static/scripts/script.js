@@ -15,7 +15,6 @@ class BondsAI {
         this.setupScrollBehavior();
         this.setupChatHandlers();
         this.setupKeyboardHandlers();
-        this.resetConversation();
         
         // Set initial scroll position to logo section
         document.getElementById('logo-section').scrollIntoView();
@@ -166,7 +165,7 @@ class BondsAI {
     }
 
     async callAPI(type, message) {
-        const endpoint = type === 'dating' ? '/api/dating/chat' : '/api/job/chat';
+        const endpoint = '/applicant/chat';
         const response = await fetch(`${this.API_BASE}${endpoint}`, {
             method: 'POST',
             headers: {
@@ -254,35 +253,23 @@ class BondsAI {
 
         closeButton.addEventListener('click', () => {
             profileDisplay.classList.add('exit');
+            this.endConversation();
             setTimeout(() => {
                 profileDisplay.style.display = 'none';
             }, 600);
         }); 
     }
 
-    // Utility method to reset conversations
-    async resetConversation() {
+    async endConversation() {
         try {
-            const response = await fetch(`${this.API_BASE}/api/job/reset`, {
+            const response = await fetch(`${this.API_BASE}/applicant/end`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
-            
-            if (response.ok) {
-                this.clearMessages(type);
-                // Reload initial message
-                const startResponse = await fetch(`${this.API_BASE}/api/job/start`);
-                if (startResponse.ok) {
-                    const data = await startResponse.json();
-                    this.addMessageToUI('job', data.message, 'ai');
-                }
-            }
-
-            this.isComplete = false;
         } catch (error) {
-            console.error('Error resetting conversation:', error);
+            console.error('Error ending conversation:', error);
         }
     }
 }
