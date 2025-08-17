@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 50px;
+    font-family: 'Arial', sans-serif;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    padding-top: 80px;
+
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+}
+
+.error-image {
+    width: 100%;
+    height: auto;
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+}
+
+.error-text {
+    text-align: center;
+    font-size: 2rem;
+    color: #98c1cc;
+    margin-top: 0px;
+    width: 80%;
+    max-width: 500px;
+    margin: 20px auto;
+}

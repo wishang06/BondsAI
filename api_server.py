@@ -141,6 +141,10 @@ def get_applicants():
         print(f"Error getting applicants: {str(e)}")
         return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return app.send_static_file('404.html'), 404
+
 if __name__ == '__main__':
     print("Starting BondsAI API Server...")
     print("Make sure you have set up your OpenAI API key in the .env file")
