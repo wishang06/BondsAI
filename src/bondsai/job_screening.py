@@ -8,6 +8,7 @@ from typing import List, Dict, Any, Optional
 from openai import AsyncOpenAI
 from .config import config
 from server.DeltaTimeRecorder import DeltaTimeRecorder
+import re
 
 class JobCandidate:
     """Represents a job candidate with assessment data."""
@@ -63,11 +64,20 @@ class JobCandidate:
     
     def get_filename(self) -> str:
         """Generate filename for candidate assessment."""
-        if self.name:
-            name_part = self.name.replace(" ", "_")
+        # Sanitize and fallback logic for candidate name
+        name = self.name.strip() if self.name else ""
+        if name and name.lower() != "unknown":
+            # Remove special characters and extra spaces
+            name_part = "_".join(
+                [
+                    "".join(c for c in part if c.isalnum())
+                    for part in name.split()
+                ]
+            )
+            if not name_part:
+                name_part = "candidate"
         else:
             name_part = "candidate"
-        
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         return f"{name_part}_assessment_{timestamp}.txt"
     
@@ -329,33 +339,62 @@ Full Interview Transcript:
             return f"Error saving assessment: {str(e)}"
     
     async def extract_candidate_name(self) -> None:
-        """Extract candidate name from conversation using AI."""
-        if self.candidate.name or len(self.messages) < 2:
+        """Robustly extract candidate name from the first user message, fallback to OpenAI if needed."""
+        name = (self.candidate.name or "").strip()
+        user_msgs = [m["content"] for m in self.messages if m["role"] == "user"]
+        if (name and name.lower() != "unknown") or not user_msgs:
             return
-        
-        try:
-            # Create a prompt to extract the candidate's name
-            name_extraction_prompt = f"""Based on this conversation, what is the candidate's name? 
-            
-Conversation:
-{chr(10).join([f"{msg['role'].upper()}: {msg['content']}" for msg in self.messages[-4:]])}
-
-Please respond with just the candidate's first and last name, or "Unknown" if no name was mentioned.
-Examples: "John Smith", "Sarah Johnson", "Unknown" """
-
-            response = await self.client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": name_extraction_prompt}],
-                temperature=0.1,
-                max_tokens=50,
-            )
-            
-            extracted_name = response.choices[0].message.content.strip()
-            if extracted_name and extracted_name.lower() != "unknown" and len(extracted_name.split()) <= 3:
-                self.candidate.name = extracted_name
-                
-        except Exception as e:
-            print(f"Error extracting candidate name: {str(e)}")
+        first_msg = user_msgs[0].strip()
+        extracted_name = None
+        # 1. Try common intro patterns (case-insensitive)
+        patterns = [
+            r"my name is ([A-Za-z][a-zA-Z\-']*(?: [A-Za-z][a-zA-Z\-']*){0,2})",
+            r"i am ([A-Za-z][a-zA-Z\-']*(?: [A-Za-z][a-zA-Z\-']*){0,2})",
+            r"i'm ([A-Za-z][a-zA-Z\-']*(?: [A-Za-z][a-zA-Z\-']*){0,2})",
+            r"this is ([A-Za-z][a-zA-Z\-']*(?: [A-Za-z][a-zA-Z\-']*){0,2})",
+            r"it's ([A-Za-z][a-zA-Z\-']*(?: [A-Za-z][a-zA-Z\-']*){0,2})",
+            r"([A-Za-z][a-zA-Z\-']* [A-Za-z][a-zA-Z\-']*) here",
+        ]
+        for pat in patterns:
+            match = re.search(pat, first_msg, re.IGNORECASE)
+            if match:
+                extracted_name = match.group(1).strip()
+                print(f"[DEBUG] Name extracted by pattern '{pat}': {extracted_name}")
+                break
+        # 2. If not found, extract first two alphabetic words (allow single name)
+        if not extracted_name:
+            words = [w for w in first_msg.split() if w.isalpha() and len(w) > 1]
+            if words:
+                extracted_name = words[0]
+                if len(words) > 1:
+                    extracted_name += f" {words[1]}"
+                print(f"[DEBUG] Name extracted by first words: {extracted_name}")
+        # 3. Fallback to OpenAI
+        if not extracted_name:
+            try:
+                name_extraction_prompt = f"""Based on the following candidate response, what is the candidate's name?\n\nResponse:\n{first_msg}\n\nPlease respond with just the candidate's first and last name, or \"Unknown\" if no name was mentioned.\nExamples: \"John Smith\", \"Sarah Johnson\", \"Unknown\" """
+                response = await self.client.chat.completions.create(
+                    model=self.model,
+                    messages=[{"role": "user", "content": name_extraction_prompt}],
+                    temperature=0.1,
+                    max_tokens=50,
+                )
+                extracted_name = response.choices[0].message.content.strip()
+                print(f"[DEBUG] Name extracted by OpenAI: {extracted_name}")
+            except Exception as e:
+                print(f"Error extracting candidate name: {str(e)}")
+                extracted_name = None
+        # Only accept if not unknown, not empty, and 3 words or fewer
+        if (
+            extracted_name
+            and extracted_name.lower() != "unknown"
+            and len(extracted_name.split()) <= 3
+            and any(c.isalpha() for c in extracted_name)
+        ):
+            self.candidate.name = extracted_name
+            print(f"[DEBUG] Candidate name set: {self.candidate.name}")
+        else:
+            print(f"[DEBUG] Name extraction failed or result invalid: '{extracted_name}'")
 
     async def chat(self, user_input: str = None) -> str:
         """Send a message to the AI and get a response."""
@@ -364,8 +403,9 @@ Examples: "John Smith", "Sarah Johnson", "Unknown" """
         if user_input:
             self.add_message("user", user_input)
             
-            # Try to extract candidate name from early messages
-            if self.candidate.conversation_count <= 3:
+            # Immediately extract candidate name after first user message
+            user_msg_count = len([m for m in self.messages if m["role"] == "user"])
+            if user_msg_count == 1:
                 await self.extract_candidate_name()
         
         # Check if conversation is ready to end (10-15 exchanges)
