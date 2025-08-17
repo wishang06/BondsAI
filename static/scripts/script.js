@@ -261,9 +261,21 @@ class BondsAI {
         });
     }
 
-    showConfirmationPage() {
-        const confirmationOverlay = document.getElementById('confirmation-overlay');
-        confirmationOverlay.style.display = 'flex';
+    async showConfirmationPage() {
+        try {
+            // Fetch the thank-you.html content
+            const response = await fetch('/static/thank-you.html');
+            const thankYouHTML = await response.text();
+            
+            // Replace the entire document with the thank-you page content
+            document.open();
+            document.write(thankYouHTML);
+            document.close();
+        } catch (error) {
+            console.error('Error loading thank-you page:', error);
+            // Fallback: redirect to thank-you.html directly
+            window.location.href = '/static/thank-you.html';
+        }
     }
 
     async endConversation() {
