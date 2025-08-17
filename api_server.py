@@ -27,12 +27,6 @@ applicant_manager = ApplicantManager()
 @app.route('/applicant')
 def applicant():
     try:
-        applicant_status = applicant_manager.get_applicant_status(request.remote_addr)
-        
-        # If applicant has already completed their interview, redirect to thank you page
-        if applicant_status == 'applied':
-            return app.send_static_file('thank-you.html')
-        
         applicant_manager.start_conversation(request.remote_addr)
         return app.send_static_file('applicant.html')
     
@@ -40,7 +34,7 @@ def applicant():
         if applicant_manager.get_applicant_status(request.remote_addr) == 'applying':
             return app.send_static_file('applicant.html')
         
-        return jsonify({"error": str(e)}), 403
+        return app.send_static_file('applicant_applied.html')
 
 @app.route('/applicant/chat', methods=['POST'])
 def applicant_chat():
