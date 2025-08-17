@@ -1,4 +1,12 @@
 /* Confirmation Page Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
 .confirmation-overlay {
     position: fixed;
     top: 0;
@@ -21,7 +29,7 @@
 }
 
 .confirmation-content {
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #1a3664 0%, #102756 100%);
     border-radius: 30px;
     padding: 60px 40px;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
@@ -34,19 +42,21 @@
     color: #22c55e;
     margin-bottom: 30px;
     animation: confirmationIconPulse 1s ease-out;
+    width: 80px;
+    height: 80px;
 }
 
 .confirmation-title {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #3b82f6;
+    color: #aec9f4;
     margin-bottom: 30px;
     line-height: 1.2;
 }
 
 .confirmation-message {
     font-size: 1.3rem;
-    color: #374151;
+    color: #b1c0d9;
     margin-bottom: 20px;
     line-height: 1.6;
 }
