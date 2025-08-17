@@ -256,8 +256,14 @@ class BondsAI {
             this.endConversation();
             setTimeout(() => {
                 profileDisplay.style.display = 'none';
+                this.showConfirmationPage();
             }, 600);
-        }); 
+        });
+    }
+
+    showConfirmationPage() {
+        const confirmationOverlay = document.getElementById('confirmation-overlay');
+        confirmationOverlay.style.display = 'flex';
     }
 
     async endConversation() {
