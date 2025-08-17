@@ -60,14 +60,11 @@ def applicant_chat():
             profile_data = None
             if is_complete:
                 applicant_manager.stop_conversation_timer(request.remote_addr)
-                conversation_duration = applicant_manager.get_conversation_duration(request.remote_addr).total_seconds()
-                conversation_hours = int(conversation_duration // 3600)
-                conversation_minutes = int((conversation_duration % 3600) // 60)
-                conversation_seconds = int(conversation_duration % 60)
+                conversation_duration = applicant_manager.get_conversation_duration(request.remote_addr)
                 profile_data = {
                     "name": applicant_job_assistant.candidate.name or "Candidate",
                     "conversation_count": applicant_job_assistant.candidate.conversation_count,
-                    "conversation_duration": f"{conversation_hours}h {conversation_minutes}m {conversation_seconds}s",
+                    "conversation_duration": conversation_duration,
                     "assessment_summary": "Assessment completed based on interview"
                 }
             

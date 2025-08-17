@@ -46,14 +46,16 @@ class ApplicantManager:
         if self.get_applicant_status(ip_address) != 'applying':
             raise ValueError(f"Applicant {ip_address} is not currently applying.") 
         
-        return self.applicant_job_assistant[ip_address]
+        job_assistant = self.applicant_job_assistant[ip_address]
+        job_assistant.candidate.conversation_duration = self.get_conversation_duration(ip_address)
+        return job_assistant
     
     # Get the conversation duration for the applicant in datetime format, 0 for unfinished conversations and -1 for finished conversations
     def get_conversation_duration(self, ip_address):
         if self.get_applicant_status(ip_address) != 'applying':
-            return -1
+            return "0h 0m 0s"
         
-        return self.applicant_timer[ip_address].get_delta()
+        return self.applicant_timer[ip_address].get_delta_str()
     
     # Stop conversation timer for the applicant
     def stop_conversation_timer(self, ip_address):

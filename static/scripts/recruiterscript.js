@@ -45,7 +45,7 @@ function displayApplicants(applicants) {
         bubble.innerHTML = `
             <div class="applicant-name">${applicant.name || 'Anonymous'}</div>
             <div class="applicant-info">Interview: ${applicant.interview_date}</div>
-            <div class="applicant-info">Exchanges: ${applicant.conversation_count}</div>
+            <div class="applicant-info">Duration: ${applicant.conversation_duration}</div>
             <div class="applicant-score">Score: ${applicant.final_score || '0'}/100</div>
         `;
         

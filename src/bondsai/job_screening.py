@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 from openai import AsyncOpenAI
 from .config import config
-
+from server.DeltaTimeRecorder import DeltaTimeRecorder
 
 class JobCandidate:
     """Represents a job candidate with assessment data."""
@@ -20,6 +20,8 @@ class JobCandidate:
         self.skills = []
         self.projects = []
         self.conversation_count = 0
+        self.conversation_duration = "0h 0m 0s"
+        self.conversation_timer = DeltaTimeRecorder()
         
         # Assessment scores
         self.scores = {
@@ -361,6 +363,7 @@ If you have any questions about our Quantitative Trading program or how we opera
             assessment_content = f"""QUANTITATIVE TRADING CANDIDATE ASSESSMENT
 Generated on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 Interview Length: {self.candidate.conversation_count} exchanges
+Conversation Duration: {self.candidate.conversation_duration}
 
 {ai_assessment}
 
@@ -423,6 +426,8 @@ Examples: "John Smith", "Sarah Johnson", "Unknown" """
         
         # Check if conversation is ready to end (10-15 exchanges)
         if self.candidate.conversation_count >= 10 and not self.ready_for_assessment:
+            self.candidate.conversation_timer.update()
+            self.candidate.conversation_duration = self.candidate.conversation_timer.get_delta_str()
             self.ready_for_assessment = True
             # Save assessment to file
             filepath = await self.save_assessment_to_file()

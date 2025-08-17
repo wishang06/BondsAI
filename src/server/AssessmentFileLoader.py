@@ -27,6 +27,13 @@ def parse_assessment_file(filepath):
         if count_match:
             conversation_count = int(count_match.group(1))
 
+        # Extract conversation duration
+        conversation_duration_match = re.search(r'Conversation Duration: (\d+)h (\d+)m (\d+)s', content)
+        if conversation_duration_match:
+            conversation_duration = f"{conversation_duration_match.group(1)}h {conversation_duration_match.group(2)}m {conversation_duration_match.group(3)}s"
+        else:
+            conversation_duration = "0h 0m 0s"
+
         final_score = 0
         final_score_match = re.search(r'Final Score: (\d+)', content.replace('**', ''))
         if final_score_match:
@@ -39,6 +46,7 @@ def parse_assessment_file(filepath):
             "name": candidate_name,
             "interview_date": interview_date,
             "conversation_count": conversation_count,
+            "conversation_duration": conversation_duration,
             "final_score": final_score,
             "technical_skills": {
                 "quantitative_reasoning": 0,

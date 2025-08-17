@@ -15,3 +15,11 @@ class DeltaTimeRecorder:
         delta = self.end_time - self.start_time
         return delta
     
+    def get_delta_str(self):
+        delta = self.get_delta().total_seconds()
+        hours = int(delta // 3600)
+        minutes = int((delta % 3600) // 60)
+        seconds = int(delta % 60)
+        return f"{hours}h {minutes}m {seconds}s"
+        
+    
