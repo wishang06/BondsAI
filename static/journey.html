@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BondsAI - Interview Journey</title>
+    <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico" />
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link rel="stylesheet" href="/styles/recruiterstyles.css" />
+  </head>
+  <body>
+    <div class="recruiter-container">
+      <div class="header">
+        <div class="h1-box">
+          <h1>Your Interview Odyssey</h1>
+        </div>
+        <p>
+          Track your practice sessions, see how your skills are evolving, and follow your path toward your target role.
+        </p>
+      </div>
+
+      <div id="loading" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading your practice sessions...</p>
+      </div>
+
+      <div
+        id="applicants-container"
+        class="applicants-container"
+        style="display: none"
+      >
+        <div class="applicants-grid" id="applicants-grid">
+          <!-- Session nodes will be populated here -->
+        </div>
+      </div>
+
+      <div id="no-applicants" class="no-applicants" style="display: none">
+        <h3>No Practice Sessions Yet</h3>
+        <p>
+          Once you complete your first AI practice interview, your journey and stats will appear here.
+        </p>
+        <a href="/applicant" class="refresh-button">Start First Practice</a>
+      </div>
+    </div>
+
+    <!-- Session Details Modal -->
+    <div id="characteristics-modal" class="characteristics-modal">
+      <div class="modal-content">
+        <button class="close-button" onclick="closeModal()">&times;</button>
+        <div class="modal-header">
+          <h2 id="modal-candidate-name">Practice Session</h2>
+          <p id="modal-candidate-info">Interview completed</p>
+        </div>
+        <div id="modal-characteristics-content"></div>
+        <div class="growth-plan-footer">
+          <button id="growth-plan-button" class="refresh-button">
+            See Growth Plan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/scripts/journeyscript.js"></script>
+  </body>
+</html>
+
+

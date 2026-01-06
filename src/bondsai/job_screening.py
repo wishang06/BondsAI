@@ -1,4 +1,4 @@
-"""Job Screening Assistant for Quant Trading Candidates."""
+"""Student Interview Coach for Early-Career Roles."""
 
 import asyncio
 import json
@@ -113,62 +113,51 @@ class JobScreeningAssistant:
         self.is_first_message = True
         self.ready_for_assessment = False
         
-        # Job description for quant trading
-        self.job_description = """Quantitative Trading Trainee/Intern Position
+        # Generic early-career context for students
+        self.job_description = """Student & Graduate Interview Practice Context
 
-We are seeking highly motivated candidates for our Quantitative Trading program. This role involves developing and implementing trading strategies, analyzing market data, and working with cutting-edge technology.
+You are helping university students and recent graduates prepare for internships, graduate roles and part-time jobs across fields (e.g. software engineering, data science, consulting, finance, marketing, retail, etc.).
 
-Key Requirements:
-- Strong quantitative and analytical skills
-- Programming experience (Python, C++, etc.)
-- Understanding of financial markets and instruments
-- Problem-solving and decision-making abilities
-- Team collaboration and communication skills
-- Continuous learning mindset
-- Entrepreneurial spirit and initiative
+Most students have limited experience. Their main material comes from:
+- Coursework and capstone projects
+- Group assignments and club/committee roles
+- Personal projects and hackathons
+- Part-time or casual jobs
 
-Our Values:
-- Collaborative Thinkers: Best ideas come from teamwork
-- Continuous Learners: Always improving and upskilling
-- Challenge Seekers: Thrive on complexity and innovation
-- Entrepreneurial Spirits: Own your ideas and take initiative"""
+Your goal is to help them practise answering behavioural, motivational and basic role-related questions in a way that would make sense to a real recruiter, without pretending to be one.
+"""
 
-        # System prompt for job screening
-        self.system_prompt = f"""You are an experienced HR recruiter conducting a comprehensive interview for a Quantitative Trading position. Your role is to:
+        # System prompt for student interview coaching
+        self.system_prompt = f"""You are a friendly but rigorous early-career interview coach.
+You are **not** the real employer and must not promise jobs, but you aim to prepare the student for real interviews.
 
-1. **Be professional but conversational**: Create a comfortable atmosphere while maintaining focus on assessment
-2. **Gather comprehensive information**: Learn about their education, experience, projects, and skills
-3. **Assess behavioral traits**: Evaluate problem-solving, teamwork, initiative, resilience, and adaptability
-4. **Evaluate cultural fit**: Assess alignment with collaborative thinking, continuous learning, challenge-seeking, and entrepreneurial spirit
-5. **Technical assessment**: Understand their quantitative skills, programming abilities, and market knowledge
-6. **Soft skills evaluation**: Assess communication, decision-making, and leadership potential
-
-**Assessment Areas to Cover:**
-- Education background and academic performance
-- Relevant work experience and internships
-- Technical projects and achievements
-- Programming and quantitative skills
-- Market knowledge and trading experience
-- Problem-solving approaches and examples
-- Teamwork and collaboration experiences
-- Initiative and leadership examples
-- Handling challenges and setbacks
-- Career goals and motivation
+Your role in each conversation:
+1. **Be supportive and clear** – explain what you're asking and why it matters for internships / grad roles.
+2. **Gather relevant background** – degree, year level, target field/role, any projects, clubs, or part-time work.
+3. **Ask balanced questions** – behavioural (STAR), motivational ("why this role/company"), and light technical/role questions suited to their field.
+4. **Teach structure** – gently nudge students toward using STAR (Situation, Task, Action, Result) and concise answers.
+5. **Notice common student pitfalls** – rambling, generic answers, no concrete results, underselling impact, not answering the question.
+6. **Encourage reflection** – ask what they learned, what they'd change, and how they can improve next time.
 
 **Conversation Flow:**
-- Start with introduction and background
-- Explore education and technical skills
-- Discuss relevant experiences and projects
-- Assess behavioral traits through examples
-- Evaluate cultural alignment and values
-- Understand career motivations and goals
+- Start by asking their name, what they study, which year they are in, and what kind of role they are aiming for.
+- Then run a short, realistic practice interview (behavioural + motivational + light role-related) adapted to their background.
+- Use follow-up questions to get concrete examples and numbers when possible.
+- After 10–15 student responses, start to wrap up and move towards closing the session.
 
-**Job Context:**
+**Assessment & Report:**
+At the end of the interview (after 10–15 student messages), you will create a **student-friendly assessment report** that includes:
+1. Clear 0–100 scores for several skill areas (technical/role, behavioural, communication, etc.).
+2. A short, honest summary of what they did well and where they struggled.
+3. 3–7 specific, actionable recommendations for how to improve before the next practice (e.g. \"prepare 3 STAR stories\", \"quantify outcomes\" etc.).
+4. A brief, encouraging closing note reminding them this is practice and improvement is expected.
+
+Use warm, encouraging language but stay realistic about their current interview readiness.
+
+**Context:**
 {self.job_description}
 
-Keep the conversation engaging and professional. Ask follow-up questions to get specific examples and details. After 10-15 exchanges, naturally conclude and generate the assessment report.
-
-Start with: "Hello! I'm conducting interviews for our Quantitative Trading program. Could you tell me a bit about yourself and your background?" """
+Start with: "Hi! I'm your interview coach. Could you tell me your name, what you're studying, and what kind of internship or role you're aiming for?" """
 
     def add_message(self, role: str, content: str) -> None:
         """Add a message to the conversation history."""
@@ -184,20 +173,22 @@ Start with: "Hello! I'm conducting interviews for our Quantitative Trading progr
         self.ready_for_assessment = False
     
     async def generate_assessment_report(self) -> str:
-        """Generate comprehensive assessment report using AI."""
+        """Generate comprehensive assessment report using AI for a student practice session."""
         try:
-            assessment_prompt = f"""Based on this interview conversation, create a detailed candidate assessment for a Quantitative Trading position.
+            assessment_prompt = f"""Based on the following practice interview conversation with a student, create a detailed assessment to help them improve for future real interviews.
 
 Conversation:
 {chr(10).join([f"{msg['role'].upper()}: {msg['content']}" for msg in self.messages])}
 
-Please provide a comprehensive assessment including:
+Assume this is a practice session only. Do **not** pretend to be the real employer and do **not** guarantee any job outcomes.
+
+Please provide a comprehensive assessment including **all** of the following sections and headings so that it can be parsed reliably:
 
 1. **Technical Skills Assessment** (0-100 for each):
-   - Quantitative Reasoning
-   - Programming Skills
-   - Market Knowledge
-   - Data Analysis
+   - Quantitative Reasoning (or Analytical Thinking if non-quant role)
+   - Programming Skills (or relevant hard skills for their field)
+   - Market / Industry Knowledge (adapt to their field)
+   - Data Analysis (or Working With Information if non-technical)
 
 2. **Behavioral Traits Assessment** (0-100 for each):
    - Problem-solving
@@ -218,16 +209,21 @@ Please provide a comprehensive assessment including:
    - Time Management
    - Leadership
 
-5. **Overall Assessment**:
-   - Final Score (0-100)
-   - Key Strengths
-   - Areas for Improvement
-   - Cultural Alignment
-   - Recommendation (Strong/Moderate/Weak candidate)
+5. **Student Skill Map & Feedback Loop**:
+   - Brief commentary on where they are strongest right now.
+   - Brief commentary on their weakest 2–3 areas.
+   - 3–7 concrete, student-friendly action items (e.g. practise 3 STAR stories, quantify outcomes, prepare a 60-second intro).
 
-Format the response clearly with sections and scores, in the following example format:
+6. **Overall Assessment**:
+   - Final Score (0-100) for current interview readiness for their target level.
+   - Key Strengths (bullet points).
+   - Areas for Improvement (bullet points).
+   - Cultural Alignment (bullet points, optional).
+   - Recommendation (weak / moderate / strong candidate **for early-career roles**, framed as guidance only).
 
-### Candidate Assessment for Quantitative Trading Position
+Format the response clearly with markdown-style headings, following this structure exactly:
+
+### Student Interview Practice Assessment
 
 #### 1. Technical Skills Assessment
 - **Quantitative Reasoning**: (score)
@@ -271,7 +267,11 @@ Format the response clearly with sections and scores, in the following example f
 - **Leadership**: (score)
   - (insight)
 
-#### 5. Overall Assessment
+#### 5. Student Skill Map & Feedback Loop
+- (Write 2–4 short paragraphs or bullets explaining their current skill profile and practice focus areas.)
+- (List 3–7 specific action items the student can take before their next practice.)
+
+#### 6. Overall Assessment
 - **Final Score**: (score)
 - **Key Strengths**:
   - (insight)
@@ -279,11 +279,10 @@ Format the response clearly with sections and scores, in the following example f
   - (insight)
 - **Cultural Alignment**:
   - (insight)
-- **Recommendation**: (weak/moderate/strong candidate)
+- **Recommendation**: (weak/moderate/strong early-career candidate)
   - (insight)
 
-(Final comment)
-
+End with a short, encouraging paragraph emphasising that practice leads to improvement.
 """
 
             response = await self.client.chat.completions.create(
@@ -314,7 +313,7 @@ Format the response clearly with sections and scores, in the following example f
             ai_assessment = await self.generate_assessment_report()
             
             # Create assessment content
-            assessment_content = f"""QUANTITATIVE TRADING CANDIDATE ASSESSMENT
+            assessment_content = f"""STUDENT INTERVIEW PRACTICE ASSESSMENT
 Generated on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 Interview Length: {self.candidate.conversation_count} exchanges
 Conversation Duration: {self.candidate.conversation_duration}

@@ -20,15 +20,15 @@ applicant_manager = ApplicantManager()
 
 @app.route('/applicant')
 def applicant():
-    try:
-        applicant_manager.start_conversation(request.remote_addr)
-        return app.send_static_file('applicant.html')
-    
-    except ValueError as e:
-        if applicant_manager.get_applicant_status(request.remote_addr) == 'applying':
-            return app.send_static_file('applicant.html')
-        
-        return app.send_static_file('applicant_applied.html')
+    """
+    Student-facing practice interview entrypoint.
+
+    For the student odyssey use case we allow repeated practice sessions,
+    so we always (re)start a conversation for this IP and send them to the
+    applicant (student) chat UI.
+    """
+    applicant_manager.start_conversation(request.remote_addr)
+    return app.send_static_file('applicant.html')
 
 @app.route('/applicant/chat', methods=['POST'])
 def applicant_chat():
@@ -98,6 +98,11 @@ def send_styles(filename):
 @app.route('/recruiter')
 def recruiter():
     return app.send_static_file("recruiter.html")
+
+@app.route('/journey')
+def journey():
+    """Student long-term growth / journey view."""
+    return app.send_static_file("journey.html")
 
 @app.route('/image/<path:filename>')
 def send_icon(filename):

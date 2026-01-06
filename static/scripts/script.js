@@ -262,7 +262,8 @@ class BondsAI {
     }
 
     async showConfirmationPage() {
-        window.location.href = '/applicant';
+        // After a practice session, send students to their journey view
+        window.location.href = '/journey';
     }
 
     async endConversation() {

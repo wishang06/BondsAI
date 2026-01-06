@@ -22,11 +22,12 @@ class ApplicantManager:
         
         self.applicant_state[ip_address] = status
 
-    # Start a conversation with the applicant by creating a JobScreeningAssistant instance
+    # Start or restart a conversation with the applicant by creating a JobScreeningAssistant instance
     def start_conversation(self, ip_address):
-        if self.get_applicant_status(ip_address) != 'not applied':
-            raise ValueError(f"Applicant {ip_address} has already applied or is currently applying.")
-        
+        """
+        For the student training use case, we want to allow many practice runs.
+        Each visit to /applicant resets the conversation state for this IP.
+        """
         self.set_applicant_status(ip_address, 'applying')
         self.applicant_job_assistant[ip_address] = JobScreeningAssistant()
         self.applicant_timer[ip_address] = DeltaTimeRecorder()
@@ -37,7 +38,7 @@ class ApplicantManager:
             print(f"Applicant {ip_address} is not in conversation.")
             return
         
-        self.set_applicant_status(ip_address, 'applied')
+        self.set_applicant_status(ip_address, 'not applied')
         del self.applicant_job_assistant[ip_address]
         del self.applicant_timer[ip_address]
 
