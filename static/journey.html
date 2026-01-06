@@ -6,62 +6,100 @@
     <title>BondsAI - Interview Journey</title>
     <link rel="shortcut icon" type="image/x-icon" href="image/favicon.ico" />
     <link rel="stylesheet" href="/styles/styles.css" />
-    <link rel="stylesheet" href="/styles/recruiterstyles.css" />
+    <link rel="stylesheet" href="/styles/journeystyles.css" />
   </head>
   <body>
-    <div class="recruiter-container">
-      <div class="header">
-        <div class="h1-box">
-          <h1>Your Interview Odyssey</h1>
-        </div>
-        <p>
-          Track your practice sessions, see how your skills are evolving, and follow your path toward your target role.
-        </p>
+    <div class="journey-container">
+      <!-- Decorative Background Elements -->
+      <div class="background-elements">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
       </div>
 
-      <div id="loading" class="loading-spinner">
+      <div class="journey-header">
+        <h1>Your Interview Odyssey</h1>
+        <p>Track your progress and grow with each practice session</p>
+      </div>
+
+      <div class="journey-stats-bar">
+        <div class="stat-item">
+          <span class="stat-icon">🔥</span>
+          <span id="streak-count">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon">⭐</span>
+          <span id="total-sessions">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon">📊</span>
+          <span id="avg-score">0</span>
+        </div>
+      </div>
+
+      <div id="loading" class="loading-spinner" style="display: none">
         <div class="spinner"></div>
-        <p>Loading your practice sessions...</p>
+        <p>Loading your journey...</p>
       </div>
 
-      <div
-        id="applicants-container"
-        class="applicants-container"
-        style="display: none"
-      >
-        <div class="applicants-grid" id="applicants-grid">
-          <!-- Session nodes will be populated here -->
+      <div id="no-sessions" class="no-sessions-journey" style="display: none">
+        <div class="empty-state-illustration">🎓</div>
+        <h2>Start Your Journey!</h2>
+        <p>Complete your first practice interview to begin your odyssey</p>
+        <a href="/applicant" class="start-journey-button">Start First Practice</a>
+      </div>
+
+      <div id="roadmap-container" class="roadmap-container" style="display: none">
+        <!-- Section Banners -->
+        <div id="section-banners" class="section-banners"></div>
+
+        <!-- Decorative Elements -->
+        <div class="decorative-elements">
+          <div class="tree tree-1">🌳</div>
+          <div class="tree tree-2">🌲</div>
+          <div class="tree tree-3">🌴</div>
+          <div class="tree tree-4">🌳</div>
+          <div class="tree tree-5">🌲</div>
+          <div class="bush bush-1">🌿</div>
+          <div class="bush bush-2">🌿</div>
+          <div class="bush bush-3">🌿</div>
+          <div class="bush bush-4">🌿</div>
+          <div class="bush bush-5">🌿</div>
+          <div class="bush bush-6">🌿</div>
+          <div class="flower flower-1">🌸</div>
+          <div class="flower flower-2">🌺</div>
+          <div class="flower flower-3">🌼</div>
+          <div class="flower flower-4">🌸</div>
+          <div class="flower flower-5">🌺</div>
+          <div class="flower flower-6">🌼</div>
+          <div class="campfire">🔥</div>
+          <div class="character-mascot">🎓</div>
         </div>
-      </div>
 
-      <div id="no-applicants" class="no-applicants" style="display: none">
-        <h3>No Practice Sessions Yet</h3>
-        <p>
-          Once you complete your first AI practice interview, your journey and stats will appear here.
-        </p>
-        <a href="/applicant" class="refresh-button">Start First Practice</a>
+        <!-- SVG Path -->
+        <svg class="path-svg" id="path-svg">
+          <!-- Path will be drawn here -->
+        </svg>
+
+        <!-- Landmarks Container -->
+        <div class="landmarks-container" id="landmarks-container">
+          <!-- Landmarks will be added here -->
+        </div>
       </div>
     </div>
 
     <!-- Session Details Modal -->
-    <div id="characteristics-modal" class="characteristics-modal">
+    <div id="session-modal" class="characteristics-modal">
       <div class="modal-content">
-        <button class="close-button" onclick="closeModal()">&times;</button>
+        <button class="close-button" id="close-modal-btn">&times;</button>
         <div class="modal-header">
-          <h2 id="modal-candidate-name">Practice Session</h2>
-          <p id="modal-candidate-info">Interview completed</p>
+          <h2 id="modal-session-name">Practice Session</h2>
+          <p id="modal-session-info">Interview completed</p>
         </div>
-        <div id="modal-characteristics-content"></div>
-        <div class="growth-plan-footer">
-          <button id="growth-plan-button" class="refresh-button">
-            See Growth Plan
-          </button>
-        </div>
+        <div id="modal-content-area"></div>
       </div>
     </div>
 
     <script src="/scripts/journeyscript.js"></script>
   </body>
 </html>
-
-

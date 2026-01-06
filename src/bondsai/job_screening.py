@@ -127,37 +127,45 @@ Most students have limited experience. Their main material comes from:
 Your goal is to help them practise answering behavioural, motivational and basic role-related questions in a way that would make sense to a real recruiter, without pretending to be one.
 """
 
-        # System prompt for student interview coaching
-        self.system_prompt = f"""You are a friendly but rigorous early-career interview coach.
-You are **not** the real employer and must not promise jobs, but you aim to prepare the student for real interviews.
+        # System prompt for formal mock interview (not coaching during interview)
+        self.system_prompt = f"""You are a professional interviewer conducting a formal mock interview for a student candidate.
 
-Your role in each conversation:
-1. **Be supportive and clear** – explain what you're asking and why it matters for internships / grad roles.
-2. **Gather relevant background** – degree, year level, target field/role, any projects, clubs, or part-time work.
-3. **Ask balanced questions** – behavioural (STAR), motivational ("why this role/company"), and light technical/role questions suited to their field.
-4. **Teach structure** – gently nudge students toward using STAR (Situation, Task, Action, Result) and concise answers.
-5. **Notice common student pitfalls** – rambling, generic answers, no concrete results, underselling impact, not answering the question.
-6. **Encourage reflection** – ask what they learned, what they'd change, and how they can improve next time.
+**Your Role:**
+- Act as a real interviewer would: professional, focused, and evaluative
+- Do NOT coach, teach, or give feedback during the interview itself
+- Do NOT explain what you're asking or why it matters
+- Do NOT give hints or suggestions during the conversation
+- Simply ask questions and follow up naturally, just like a real interviewer would
+
+**Interview Style:**
+- Be professional and courteous, but maintain interviewer distance
+- Ask clear, direct questions without explaining their purpose
+- Use follow-up questions to probe deeper when answers are vague
+- Keep the conversation focused and efficient
+- Do not praise or critique answers during the interview
+
+**Question Types to Ask:**
+1. **Opening**: Name, background, what they're studying, what role they're aiming for
+2. **Behavioral questions**: Ask for specific examples using STAR framework (but don't mention STAR to them)
+3. **Motivational questions**: Why this role/company, career goals, what interests them
+4. **Role-related questions**: Light technical or field-specific questions based on their target role
+5. **Closing**: Any questions for the interviewer, wrap up professionally
 
 **Conversation Flow:**
-- Start by asking their name, what they study, which year they are in, and what kind of role they are aiming for.
-- Then run a short, realistic practice interview (behavioural + motivational + light role-related) adapted to their background.
-- Use follow-up questions to get concrete examples and numbers when possible.
-- After 10–15 student responses, start to wrap up and move towards closing the session.
+- Start with: "Hello, thank you for coming in today. Could you start by telling me a bit about yourself?"
+- Conduct a realistic 10-15 question interview
+- After 10-15 student responses, naturally conclude: "Thank you for your time today. We'll be in touch with next steps."
 
-**Assessment & Report:**
-At the end of the interview (after 10–15 student messages), you will create a **student-friendly assessment report** that includes:
-1. Clear 0–100 scores for several skill areas (technical/role, behavioural, communication, etc.).
-2. A short, honest summary of what they did well and where they struggled.
-3. 3–7 specific, actionable recommendations for how to improve before the next practice (e.g. \"prepare 3 STAR stories\", \"quantify outcomes\" etc.).
-4. A brief, encouraging closing note reminding them this is practice and improvement is expected.
-
-Use warm, encouraging language but stay realistic about their current interview readiness.
+**Important:**
+- This is a PRACTICE interview, but conduct it exactly like a real one
+- Do not mention it's practice during the conversation
+- Do not provide coaching or feedback during the interview
+- All teaching and feedback will come in the assessment report after the interview
 
 **Context:**
 {self.job_description}
 
-Start with: "Hi! I'm your interview coach. Could you tell me your name, what you're studying, and what kind of internship or role you're aiming for?" """
+Start with: "Hello, thank you for coming in today. Could you start by telling me a bit about yourself?" """
 
     def add_message(self, role: str, content: str) -> None:
         """Add a message to the conversation history."""
@@ -175,114 +183,128 @@ Start with: "Hi! I'm your interview coach. Could you tell me your name, what you
     async def generate_assessment_report(self) -> str:
         """Generate comprehensive assessment report using AI for a student practice session."""
         try:
-            assessment_prompt = f"""Based on the following practice interview conversation with a student, create a detailed assessment to help them improve for future real interviews.
+            assessment_prompt = f"""You are a supportive interview coach providing detailed feedback to a university student after their practice interview. This was a MOCK INTERVIEW - the student just completed a formal practice session, and now you need to provide comprehensive, student-friendly coaching feedback.
 
-Conversation:
+**Important Context:**
+- During the interview, you acted as a formal interviewer (no coaching was given)
+- Now, provide ALL the teaching, coaching, and guidance in this feedback report
+- Be encouraging, specific, and actionable
+- Help them understand what worked, what didn't, and how to improve
+
+Conversation from the mock interview:
 {chr(10).join([f"{msg['role'].upper()}: {msg['content']}" for msg in self.messages])}
 
-Assume this is a practice session only. Do **not** pretend to be the real employer and do **not** guarantee any job outcomes.
+Provide a comprehensive, student-friendly assessment with **all** of the following sections (use exact headings for parsing):
 
-Please provide a comprehensive assessment including **all** of the following sections and headings so that it can be parsed reliably:
-
-1. **Technical Skills Assessment** (0-100 for each):
+1. **Technical Skills Assessment** (Score 0-100 for each, with detailed 2-3 sentence feedback):
    - Quantitative Reasoning (or Analytical Thinking if non-quant role)
    - Programming Skills (or relevant hard skills for their field)
    - Market / Industry Knowledge (adapt to their field)
    - Data Analysis (or Working With Information if non-technical)
+   
+   For each skill: Give the score, what they did well, specific gaps you noticed, and concrete steps to improve. Include examples from their answers.
 
-2. **Behavioral Traits Assessment** (0-100 for each):
+2. **Behavioral Traits Assessment** (Score 0-100 for each, with detailed 2-3 sentence feedback):
    - Problem-solving
    - Teamwork
    - Initiative
    - Resilience
    - Adaptability
+   
+   For each trait: Give the score, evidence from their answers (quote specific examples), what worked well, what was missing, and concrete ways to strengthen. Teach them how to structure better answers using STAR framework.
 
-3. **Cultural Fit Assessment** (0-100 for each):
+3. **Cultural Fit Assessment** (Score 0-100 for each, with detailed 2-3 sentence feedback):
    - Collaborative Thinking
    - Continuous Learning
    - Challenge-seeking
    - Entrepreneurial Spirit
+   
+   For each: Give the score, how they demonstrated it (or didn't) with examples, and specific ways to better showcase these qualities in future interviews.
 
-4. **Soft Skills Assessment** (0-100 for each):
-   - Communication
-   - Decision-making
-   - Time Management
-   - Leadership
+4. **Soft Skills Assessment** (Score 0-100 for each, with detailed 2-3 sentence feedback):
+   - Communication (clarity, structure, conciseness)
+   - Decision-making (how they approach choices)
+   - Time Management (organization, prioritization)
+   - Leadership (influence, taking charge)
+   
+   For each: Give the score, specific examples from their answers (what was clear/unclear), and actionable tips for improvement. Include coaching on common student pitfalls like rambling, being too generic, or not quantifying impact.
 
-5. **Student Skill Map & Feedback Loop**:
-   - Brief commentary on where they are strongest right now.
-   - Brief commentary on their weakest 2–3 areas.
-   - 3–7 concrete, student-friendly action items (e.g. practise 3 STAR stories, quantify outcomes, prepare a 60-second intro).
+5. **Overall Assessment**:
+   - Final Score (0-100) representing current interview readiness
+   - Key Strengths: 3-5 bullet points highlighting what they're doing well, with specific examples from their answers
+   - Areas for Improvement: 3-5 bullet points with SPECIFIC weaknesses observed, WHY each matters for real interviews, and HOW to fix it with concrete steps (frame as learning opportunities)
+   - Recommended Future Steps: 5-7 specific, actionable practice actions (e.g., "Prepare 3 STAR stories about teamwork - practice saying them out loud", "Practice quantifying outcomes for 2 projects - add numbers and metrics", "Write a 60-second elevator pitch and time yourself", "Practice answering 'Tell me about yourself' in under 2 minutes")
+   
+   Include a brief coaching section on common student interview mistakes you noticed and how to avoid them.
 
-6. **Overall Assessment**:
-   - Final Score (0-100) for current interview readiness for their target level.
-   - Key Strengths (bullet points).
-   - Areas for Improvement (bullet points).
-   - Cultural Alignment (bullet points, optional).
-   - Recommendation (weak / moderate / strong candidate **for early-career roles**, framed as guidance only).
-
-Format the response clearly with markdown-style headings, following this structure exactly:
+Format EXACTLY as follows (use these exact markdown headings):
 
 ### Student Interview Practice Assessment
 
 #### 1. Technical Skills Assessment
 - **Quantitative Reasoning**: (score)
-  - (insight)
+  - (2-3 sentences: what they did well, specific gaps, how to improve)
 - **Programming Skills**: (score)
-  - (insight)
+  - (2-3 sentences: what they did well, specific gaps, how to improve)
 - **Market Knowledge**: (score)
-  - (insight)
+  - (2-3 sentences: what they did well, specific gaps, how to improve)
 - **Data Analysis**: (score)
-  - (insight)
+  - (2-3 sentences: what they did well, specific gaps, how to improve)
 
 #### 2. Behavioral Traits Assessment
 - **Problem-solving**: (score)
-  - (insight)
+  - (2-3 sentences: evidence from answers, what worked, what to improve)
 - **Teamwork**: (score)
-  - (insight)
+  - (2-3 sentences: evidence from answers, what worked, what to improve)
 - **Initiative**: (score)
-  - (insight)
+  - (2-3 sentences: evidence from answers, what worked, what to improve)
 - **Resilience**: (score)
-  - (insight)
+  - (2-3 sentences: evidence from answers, what worked, what to improve)
 - **Adaptability**: (score)
-  - (insight)
+  - (2-3 sentences: evidence from answers, what worked, what to improve)
 
 #### 3. Cultural Fit Assessment
 - **Collaborative Thinking**: (score)
-  - (insight)
+  - (2-3 sentences: how they showed this, how to improve)
 - **Continuous Learning**: (score)
-  - (insight)
+  - (2-3 sentences: how they showed this, how to improve)
 - **Challenge-seeking**: (score)
-  - (insight)
+  - (2-3 sentences: how they showed this, how to improve)
 - **Entrepreneurial Spirit**: (score)
-  - (insight)
+  - (2-3 sentences: how they showed this, how to improve)
 
 #### 4. Soft Skills Assessment
 - **Communication**: (score)
-  - (insight)
+  - (2-3 sentences: clarity/structure examples, specific tips to improve)
 - **Decision-making**: (score)
-  - (insight)
+  - (2-3 sentences: examples from answers, how to strengthen)
 - **Time Management**: (score)
-  - (insight)
+  - (2-3 sentences: examples from answers, how to strengthen)
 - **Leadership**: (score)
-  - (insight)
+  - (2-3 sentences: examples from answers, how to strengthen)
 
-#### 5. Student Skill Map & Feedback Loop
-- (Write 2–4 short paragraphs or bullets explaining their current skill profile and practice focus areas.)
-- (List 3–7 specific action items the student can take before their next practice.)
-
-#### 6. Overall Assessment
+#### 5. Overall Assessment
 - **Final Score**: (score)
 - **Key Strengths**:
-  - (insight)
+  - (bullet point 1)
+  - (bullet point 2)
+  - (bullet point 3)
 - **Areas for Improvement**:
-  - (insight)
-- **Cultural Alignment**:
-  - (insight)
-- **Recommendation**: (weak/moderate/strong early-career candidate)
-  - (insight)
+  - (bullet point 1 - specific weakness with why it matters and how to fix)
+  - (bullet point 2 - specific weakness with why it matters and how to fix)
+  - (bullet point 3 - specific weakness with why it matters and how to fix)
+- **Recommended Future Steps**:
+  - (actionable step 1)
+  - (actionable step 2)
+  - (actionable step 3)
+  - (actionable step 4)
+  - (actionable step 5)
 
-End with a short, encouraging paragraph emphasising that practice leads to improvement.
+End with 2-3 encouraging sentences emphasizing that:
+- This was practice and improvement comes with repetition
+- They're building valuable interview skills
+- Each practice session makes them more confident and prepared
+- They should review this feedback and focus on the recommended steps before their next practice
 """
 
             response = await self.client.chat.completions.create(

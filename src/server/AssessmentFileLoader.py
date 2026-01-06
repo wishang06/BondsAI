@@ -133,21 +133,34 @@ def parse_assessment_file(filepath):
                 candidate_data["soft_skills"]["time_management"] = extract_score(soft_text, "time")
                 candidate_data["soft_skills"]["leadership"] = extract_score(soft_text, "leadership")
             
-            # Extract insights
-            strengths_match = re.search(r'(?:Key )?Strengths?[:\s]+(.*?)(?=Areas|Weaknesses|Recommendations|Cultural|$)', ai_assessment, re.DOTALL | re.IGNORECASE)
-            if strengths_match:
-                strengths_text = strengths_match.group(1)
-                candidate_data["insights"]["strengths"] = extract_list_items(strengths_text)
-            
-            weaknesses_match = re.search(r'(?:Areas for Improvement|Weaknesses?)[:\s]+(.*?)(?=Strengths|Recommendations|Cultural|$)', ai_assessment, re.DOTALL | re.IGNORECASE)
-            if weaknesses_match:
-                weaknesses_text = weaknesses_match.group(1)
-                candidate_data["insights"]["weaknesses"] = extract_list_items(weaknesses_text)
-            
-            recommendations_match = re.search(r'Recommendations?[:\s]+(.*?)(?=Strengths|Weaknesses|Cultural|$)', ai_assessment, re.DOTALL | re.IGNORECASE)
-            if recommendations_match:
-                recommendations_text = recommendations_match.group(1)
-                candidate_data["insights"]["recommendations"] = extract_list_items(recommendations_text)
+            # Extract insights from Overall Assessment section
+            overall_section = re.search(r'####?\s*5\.\s*Overall Assessment.*?(?=####?\s*[1-4]\.|$)', ai_assessment, re.DOTALL | re.IGNORECASE)
+            if overall_section:
+                overall_text = overall_section.group(0)
+                
+                # Extract strengths
+                strengths_match = re.search(r'(?:Key )?Strengths?[:\s]+(.*?)(?=Areas|Weaknesses|Recommended|Final|$)', overall_text, re.DOTALL | re.IGNORECASE)
+                if strengths_match:
+                    strengths_text = strengths_match.group(1)
+                    candidate_data["insights"]["strengths"] = extract_list_items(strengths_text)
+                
+                # Extract areas for improvement
+                weaknesses_match = re.search(r'Areas for Improvement[:\s]+(.*?)(?=Recommended|Strengths|Final|$)', overall_text, re.DOTALL | re.IGNORECASE)
+                if weaknesses_match:
+                    weaknesses_text = weaknesses_match.group(1)
+                    candidate_data["insights"]["weaknesses"] = extract_list_items(weaknesses_text)
+                
+                # Extract recommended future steps
+                recommendations_match = re.search(r'Recommended Future Steps[:\s]+(.*?)(?=Strengths|Areas|Final|$)', overall_text, re.DOTALL | re.IGNORECASE)
+                if recommendations_match:
+                    recommendations_text = recommendations_match.group(1)
+                    candidate_data["insights"]["recommendations"] = extract_list_items(recommendations_text)
+                else:
+                    # Fallback to old format
+                    recommendations_match = re.search(r'Recommendations?[:\s]+(.*?)(?=Strengths|Weaknesses|Areas|Final|$)', overall_text, re.DOTALL | re.IGNORECASE)
+                    if recommendations_match:
+                        recommendations_text = recommendations_match.group(1)
+                        candidate_data["insights"]["recommendations"] = extract_list_items(recommendations_text)
         
         return candidate_data
         
@@ -190,3 +203,57 @@ def extract_list_items(text):
             items.append(line)
     
     return items[:5]  # Limit to 5 items
+
+# Extract detailed feedback for a specific skill category
+def extract_category_feedback(assessment_text, category_name):
+    """Extract detailed feedback for a specific category from assessment text."""
+    category_patterns = {
+        "technical_skills": r'####?\s*1\.\s*Technical Skills.*?(?=####?\s*2\.|####?\s*Overall|$)',
+        "behavioral_traits": r'####?\s*2\.\s*Behavioral.*?(?=####?\s*[13]\.|####?\s*Overall|$)',
+        "cultural_fit": r'####?\s*3\.\s*Cultural.*?(?=####?\s*[124]\.|####?\s*Overall|$)',
+        "soft_skills": r'####?\s*4\.\s*Soft Skills.*?(?=####?\s*[1235]\.|####?\s*Overall|$)',
+    }
+    
+    pattern = category_patterns.get(category_name.lower())
+    if not pattern:
+        return ""
+    
+    match = re.search(pattern, assessment_text, re.DOTALL | re.IGNORECASE)
+    if match:
+        return match.group(0).strip()
+    
+    return ""
+
+# Extract specific skill feedback within a category
+def extract_skill_feedback(category_text, skill_name):
+    """Extract feedback for a specific skill within a category."""
+    # Look for patterns like "- **Skill Name**: score" followed by feedback
+    pattern = rf'-?\s*\*\*{re.escape(skill_name)}[^*]*\*\*:\s*\d+\s*\n\s*-?\s*(.*?)(?=-?\s*\*\*|$)'
+    match = re.search(pattern, category_text, re.DOTALL | re.IGNORECASE)
+    if match:
+        feedback = match.group(1).strip()
+        # Clean up markdown formatting
+        feedback = re.sub(r'\*\*', '', feedback)
+        feedback = re.sub(r'^\s*-\s*', '', feedback)
+        return feedback
+    
+    return ""
+
+# Get raw assessment text from file
+def get_raw_assessment_text(filepath):
+    """Get the raw assessment text from a file."""
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Extract just the assessment part (before transcript)
+        assessment_start = content.find("Generated on:")
+        transcript_start = content.find("Full Interview Transcript:")
+        
+        if assessment_start != -1 and transcript_start != -1:
+            return content[assessment_start:transcript_start].strip()
+        
+        return content
+    except Exception as e:
+        print(f"Error reading assessment file {filepath}: {str(e)}")
+        return ""

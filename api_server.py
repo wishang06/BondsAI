@@ -129,15 +129,41 @@ def get_applicants():
         for filepath in assessment_files:
             candidate_data = parse_assessment_file(filepath)
             if candidate_data:
+                # Add filepath for later retrieval
+                candidate_data['filepath'] = filepath
                 applicants.append(candidate_data)
         
-        # Sort by interview date (most recent first)
-        applicants.sort(key=lambda x: x.get('final_score', 0), reverse=True)
+        # Sort by interview date (ascending for journey progression)
+        applicants.sort(key=lambda x: x.get('interview_date', ''))
+        
+        # Limit to 5 most recent sessions
+        applicants = applicants[-5:]
         
         return jsonify({"applicants": applicants})
         
     except Exception as e:
         print(f"Error getting applicants: {str(e)}")
+        return jsonify({"error": f"Internal server error: {str(e)}"}), 500
+
+@app.route('/api/assessment/raw/<path:filename>', methods=['GET'])
+def get_raw_assessment(filename):
+    """Get raw assessment text for parsing detailed feedback."""
+    try:
+        from server.AssessmentFileLoader import get_raw_assessment_text
+        import urllib.parse
+        
+        # Decode filename
+        decoded_filename = urllib.parse.unquote(filename)
+        filepath = os.path.join("assessments", decoded_filename)
+        
+        if not os.path.exists(filepath):
+            return jsonify({"error": "Assessment file not found"}), 404
+        
+        raw_text = get_raw_assessment_text(filepath)
+        return jsonify({"assessment_text": raw_text})
+        
+    except Exception as e:
+        print(f"Error getting raw assessment: {str(e)}")
         return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
 @app.errorhandler(404)
